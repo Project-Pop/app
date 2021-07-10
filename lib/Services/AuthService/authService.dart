@@ -9,6 +9,13 @@ class AuthService {
   static const _clientId = "584k9d814gf8nftt9svngschf7";
   static const _region = 'ap-south-1';
 
+// making this class as singleton so that only one instance is ever created
+  AuthService._internal();
+  static final AuthService _instance = AuthService._internal();
+  factory AuthService() {
+    return _instance;
+  }
+
   static final _userPool =
       CognitoUserPool(_userPoolId, _clientId, storage: CognitoMemoryStorage());
 
