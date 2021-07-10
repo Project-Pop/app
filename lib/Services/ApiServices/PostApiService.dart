@@ -1,12 +1,10 @@
 import 'dart:io';
-
-import 'package:app/Models/RequestModels/PostCommentModel.dart';
-import 'package:app/Models/RequestModels/index.dart';
-import 'package:app/Models/ResponseModels/index.dart';
-import 'package:app/Services/ApiServices/Converters/BuiltValueConverter.dart';
-import 'package:app/Services/ApiServices/Interceptors/AuthInterceptor.dart';
+import 'package:app/Models/index.dart';
 import 'package:chopper/chopper.dart';
 import 'package:flutter/foundation.dart';
+
+import 'Converters/BuiltValueConverter.dart';
+import 'Interceptors/AuthInterceptor.dart';
 
 part 'PostApiService.chopper.dart';
 
