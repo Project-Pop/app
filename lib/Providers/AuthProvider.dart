@@ -10,6 +10,8 @@ class AuthProvider with ChangeNotifier {
 
   bool _isAuthenticated = false;
 
+  bool _loaded = false;
+
   AuthProvider() {
     initiate();
   }
@@ -30,6 +32,7 @@ class AuthProvider with ChangeNotifier {
     } else {
       _isAuthenticated = false;
     }
+    _loaded = true;
     notifyListeners();
   }
 
@@ -81,6 +84,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   bool get isAuthenticated => _isAuthenticated;
+  bool get loaded => _loaded;
 
   String get phoneNumber {
     return (_authService?.cognitoSession?.idToken?.payload ??
