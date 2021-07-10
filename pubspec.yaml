@@ -35,6 +35,9 @@ dependencies:
   built_value: ^7.1.0
   amazon_cognito_identity_dart_2: ^0.1.25+4
   fluttertoast: ^8.0.7
+  sms_autofill: ^2.0.0
+  country_code_picker: ^2.0.2
+
 
 dev_dependencies:
   flutter_test:

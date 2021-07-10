@@ -7,7 +7,7 @@ class InitAuthProvider extends StatelessWidget {
   const InitAuthProvider({this.child});
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return ChangeNotifierProvider(
       create: (context) => AuthProvider(),
       child: child,
     );

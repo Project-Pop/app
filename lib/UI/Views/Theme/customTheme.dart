@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomTheme {
   static ThemeData get darkTheme {
     return ThemeData(
-      primaryColor: Colors.black,
+      primaryColor: Colors.white,
       accentColor: Colors.white,
       scaffoldBackgroundColor: Colors.black,
       fontFamily: 'Monteserrat',

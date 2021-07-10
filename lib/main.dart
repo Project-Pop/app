@@ -1,3 +1,5 @@
+import 'package:app/UI/Business/Authentication/authHandler.dart';
+import 'package:app/UI/Views/Authentication/loginPage.dart';
 import 'package:flutter/material.dart';
 
 import 'UI/Views/Theme/customTheme.dart';
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: CustomTheme.darkTheme,
-      home: Scaffold(),
+      home: AuthHandler(),
     );
   }
 }
