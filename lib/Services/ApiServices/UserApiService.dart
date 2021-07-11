@@ -1,15 +1,16 @@
 import 'dart:io';
 
-import 'package:app/Models/RequestModels/index.dart';
-import 'package:app/Models/ResponseModels/index.dart';
-import 'package:app/Services/ApiServices/Converters/BuiltValueConverter.dart';
-import 'package:app/Services/ApiServices/Interceptors/AuthInterceptor.dart';
+import 'package:app/ConfigReader/configReader.dart';
+import 'package:app/Models/index.dart';
 import 'package:chopper/chopper.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'Converters/BuiltValueConverter.dart';
+import 'Interceptors/AuthInterceptor.dart';
+
 part 'UserApiService.chopper.dart';
 
-@ChopperApi(baseUrl: "v1/users")
+@ChopperApi()
 abstract class UserApiService extends ChopperService {
   @Post(path: "/")
   Future<Response> signUpNewUser(
@@ -53,7 +54,7 @@ abstract class UserApiService extends ChopperService {
 
   static UserApiService create() {
     final client = ChopperClient(
-      baseUrl: "http://localhost:",
+      baseUrl: ConfigReader.apiUserServiceUrl,
       services: [
         _$UserApiService(),
       ],
