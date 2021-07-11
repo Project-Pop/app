@@ -12,8 +12,11 @@ part 'UserApiService.chopper.dart';
 
 @ChopperApi()
 abstract class UserApiService extends ChopperService {
+  @Get(path: "/")
+  Future<Response<UserModel>> getMyProfile();
+
   @Post(path: "/")
-  Future<Response> signUpNewUser(
+  Future<Response<UserModel>> signUpNewUser(
     @Body() SignUpModel signUpModel,
   );
 
