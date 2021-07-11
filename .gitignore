@@ -48,3 +48,7 @@ pubspec.lock
 
 #Secrets
 /config/
+
+#Generated files
+/**/**.g.dart
+/**/**.chopper.dart
