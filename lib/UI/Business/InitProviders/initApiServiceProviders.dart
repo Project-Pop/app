@@ -21,6 +21,7 @@ class InitApiServiceProviders extends StatelessWidget {
           dispose: (context, service) => service.client.dispose(),
         ),
       ],
+      child: child,
     );
   }
 }

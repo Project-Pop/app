@@ -1,4 +1,5 @@
 import 'package:app/Providers/AuthProvider.dart';
+import 'package:app/UI/Business/AuthenticatedState/authenticatedStateHandler.dart';
 import 'package:app/UI/Business/InitProviders/initAuthProvider.dart';
 import 'package:app/UI/Views/Authentication/loginPage.dart';
 import 'package:app/UI/Views/Authentication/otpBox.dart';
@@ -69,14 +70,7 @@ class _AuthHandlerState extends State<AuthHandler> {
             return LoginPage(sendOtp: _sendOtp);
           }
 
-          // TODO: return after auth screen
-          return Scaffold(
-              body: Center(
-            child: Text("You are logged in",
-                style: TextStyle(
-                  color: Colors.white,
-                )),
-          ));
+          return AuthenticatedStateHandler();
         },
 
         // TODO: define this loading widget in Views/
