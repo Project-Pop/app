@@ -1,14 +1,11 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:app/ConfigReader/configReader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'secureStorage.dart';
 
 class AuthService {
-  static const _userPoolId = "ap-south-1_VS8RwdWHw";
-  static const _clientId = "584k9d814gf8nftt9svngschf7";
-  static const _region = 'ap-south-1';
-
 // making this class as singleton so that only one instance is ever created
   AuthService._internal();
   static final AuthService _instance = AuthService._internal();
@@ -16,8 +13,9 @@ class AuthService {
     return _instance;
   }
 
-  static final _userPool =
-      CognitoUserPool(_userPoolId, _clientId, storage: CognitoMemoryStorage());
+  static final _userPool = CognitoUserPool(
+      ConfigReader.cognitoUserPoolId, ConfigReader.cognitoClientId,
+      storage: CognitoMemoryStorage());
 
   CognitoUser _cognitoUser;
 

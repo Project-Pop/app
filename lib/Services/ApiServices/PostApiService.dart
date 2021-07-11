@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app/ConfigReader/configReader.dart';
 import 'package:app/Models/index.dart';
 import 'package:chopper/chopper.dart';
 import 'package:flutter/foundation.dart';
@@ -8,7 +9,7 @@ import 'Interceptors/AuthInterceptor.dart';
 
 part 'PostApiService.chopper.dart';
 
-@ChopperApi(baseUrl: "/v1/posts")
+@ChopperApi()
 abstract class PostApiService extends ChopperService {
   //
 
@@ -100,7 +101,7 @@ abstract class PostApiService extends ChopperService {
 
   static PostApiService create() {
     final client = ChopperClient(
-      baseUrl: "http://localhost",
+      baseUrl: ConfigReader.apiPostServiceUrl,
       services: [
         _$PostApiService(),
       ],
