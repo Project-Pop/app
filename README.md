@@ -1,16 +1,23 @@
-# app
+## Steps to run app
 
-A new Flutter project.
+### 1. Fetch the packages
 
-## Getting Started
+    flutter pub get
 
-This project is a starting point for a Flutter application.
+### 2. Generate required files with build_runner
 
-A few resources to get you started if this is your first Flutter project:
+    flutter pub run build_runner watch --delete-conflicting-outputs
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+After successful build, terminate this process
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 3. Add config (Skip if you already have config setup)-
+
+#### Create a folder in root directory of project
+
+    mkdir config
+
+1. create app_config.dev.yaml file and add properties
+
+### 4. Run the project in any mode (debug/profile)
+
+    flutter run -t lib/main.dev.dart

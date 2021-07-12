@@ -12,8 +12,7 @@ abstract class SignUpModel implements Built<SignUpModel, SignUpModelBuilder> {
   @nullable
   String get email;
 
-  String get phone;
-
+  @nullable
   DateTime get dob;
 
   SignUpModel._();

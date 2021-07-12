@@ -1,6 +1,8 @@
 import 'package:app/Services/AuthService/authService.dart';
 import 'package:app/Services/AuthService/secureStorage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -58,11 +60,7 @@ class AuthProvider with ChangeNotifier {
     assert(code != null);
     final resp = await _authService.confirmOTP(code);
 
-    if (resp == "EXPIRED") {
-      Fluttertoast.showToast(msg: 'OTP expired, please try again');
-      return resp;
-    } else if (resp == "WRONG_OTP") {
-      Fluttertoast.showToast(msg: 'Wrong otp, please try again');
+    if (resp == "EXPIRED" || resp == "WRONG_OTP") {
       return resp;
     } else if (resp == true) {
       _isAuthenticated = true;
@@ -77,6 +75,14 @@ class AuthProvider with ChangeNotifier {
     }
     notifyListeners();
     return true;
+  }
+
+  Future<void> logOut(BuildContext context) async {
+    await Future.wait([
+      _storage.logout(),
+    ]);
+
+    Phoenix.rebirth(context);
   }
 
   String get userId {
