@@ -8,7 +8,6 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:app/ConfigReader/config_reader.dart';
 import 'package:app/Services/Connectivity/connectivity_status.dart';
 import 'package:app/UI/Business/Authentication/auth_handler.dart';
-import 'package:app/UI/Business/InitProviders/init_api_service_providers.dart';
 import 'UI/Views/Theme/custom_theme.dart';
 
 Future<void> mainApp(String env) async {
@@ -29,9 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'App',
       theme: CustomTheme.darkTheme,
-      home: InitApiServiceProviders(
-        child: AuthHandler(),
-      ),
+      home: AuthHandler(),
     );
   }
 }

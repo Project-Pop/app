@@ -18,6 +18,26 @@ part 'post_api_service.chopper.dart';
 
 @ChopperApi()
 abstract class PostApiService extends ChopperService {
+  static final _instance = _initialize();
+
+  static PostApiService get instance => _instance;
+
+  static PostApiService _initialize() {
+    final client = ChopperClient(
+      baseUrl: ConfigReader.apiPostServiceUrl,
+      services: [
+        _$PostApiService(),
+      ],
+      converter: BuiltValueConverter(),
+      interceptors: [
+        ConnectivityInterceptor(),
+        AuthInterceptor(),
+        HttpLoggingInterceptor(),
+      ],
+    );
+    return _$PostApiService(client);
+  }
+
   //
 
   // TODO: sync this api
@@ -105,20 +125,4 @@ abstract class PostApiService extends ChopperService {
     @required @Path() String postId,
     @required @Path() String commentId,
   });
-
-  static PostApiService create() {
-    final client = ChopperClient(
-      baseUrl: ConfigReader.apiPostServiceUrl,
-      services: [
-        _$PostApiService(),
-      ],
-      converter: BuiltValueConverter(),
-      interceptors: [
-        ConnectivityInterceptor(),
-        AuthInterceptor(),
-        HttpLoggingInterceptor(),
-      ],
-    );
-    return _$PostApiService(client);
-  }
 }

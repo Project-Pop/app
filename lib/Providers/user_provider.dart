@@ -6,22 +6,20 @@ import 'package:flutter/cupertino.dart';
 
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:app/Models/index.dart';
 import 'package:app/Services/ApiServices/index.dart';
 
 class UserProvider with ChangeNotifier {
-  UserProvider({@required this.context})
-      : _userApiService = Provider.of<UserApiService>(context, listen: false) {
+  UserProvider({@required this.context}) {
     initiate();
   }
 
   bool _loaded = false;
 
   final BuildContext context;
-  final UserApiService _userApiService;
+  final UserApiService _userApiService = UserApiService.instance;
 
   UserModel _userModel;
 

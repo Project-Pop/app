@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
 // Package imports:
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fluttertoast/fluttertoast.dart';

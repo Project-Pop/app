@@ -18,6 +18,27 @@ part 'user_api_service.chopper.dart';
 
 @ChopperApi()
 abstract class UserApiService extends ChopperService {
+  static final _instance = _initialize();
+
+  static UserApiService get instance => _instance;
+
+  static UserApiService _initialize() {
+    final client = ChopperClient(
+      baseUrl: ConfigReader.apiUserServiceUrl,
+      services: [
+        _$UserApiService(),
+      ],
+      converter: BuiltValueConverter(),
+      interceptors: [
+        ConnectivityInterceptor(),
+        AuthInterceptor(),
+        HttpLoggingInterceptor(),
+      ],
+    );
+
+    return _$UserApiService(client);
+  }
+
   @Get(path: '/')
   Future<Response<UserModel>> getMyProfile();
 
@@ -60,21 +81,4 @@ abstract class UserApiService extends ChopperService {
 
   @Post(path: '/{username}/unfollow')
   Future<Response> unfollowUser(@Path() String username);
-
-  static UserApiService create() {
-    final client = ChopperClient(
-      baseUrl: ConfigReader.apiUserServiceUrl,
-      services: [
-        _$UserApiService(),
-      ],
-      converter: BuiltValueConverter(),
-      interceptors: [
-        ConnectivityInterceptor(),
-        AuthInterceptor(),
-        HttpLoggingInterceptor(),
-      ],
-    );
-
-    return _$UserApiService(client);
-  }
 }
