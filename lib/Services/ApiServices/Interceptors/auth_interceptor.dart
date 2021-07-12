@@ -2,6 +2,7 @@
 import 'dart:async';
 
 // Package imports:
+import 'package:app/Services/AuthService/auth_service.dart';
 import 'package:chopper/chopper.dart';
 
 class AuthInterceptor implements RequestInterceptor {
@@ -16,16 +17,28 @@ class AuthInterceptor implements RequestInterceptor {
   }
 
   @override
-  FutureOr<Request> onRequest(Request request) {
-    request = removeNull(request);
+  FutureOr<Request> onRequest(Request req) async {
+    final request = removeNull(req);
 
     if (request.headers['noAuthRequired'] == 'true') {
       return request;
     } else {
       // TODO: add auth header
 
-      return request
-          .copyWith(headers: {...request.headers, 'authorization': ''});
+      final _authService = AuthService();
+      if (_authService.isAuthTokenValid == false) {
+        await _authService.initCachedSession();
+      }
+
+      if (_authService.isAuthTokenValid == false) {
+        // TODO: if auth token is still not valid then ask user to login again
+        // may be Phoenix.rebirth after all logout operations
+      }
+
+      return request.copyWith(headers: {
+        ...request.headers,
+        'Authorization': _authService.authToken
+      });
     }
   }
 }

@@ -23,17 +23,9 @@ class AuthProvider with ChangeNotifier {
 
   bool _loaded = false;
 
-  Future<void> initCognitoSession() async {
-    final idToken = await _storage.getIdToken();
-    final accessToken = await _storage.getAccessToken();
-    final refreshToken = await _storage.getRefreshToken();
-
-    await _authService.initCachedSession(
-        idToken: idToken, accessToken: accessToken, refreshToken: refreshToken);
-  }
-
   Future<void> initiate() async {
-    await initCognitoSession();
+    await _authService.initCachedSession();
+
     if (userId != null) {
       _isAuthenticated = true;
     } else {
@@ -97,12 +89,5 @@ class AuthProvider with ChangeNotifier {
   bool get isAuthenticated => _isAuthenticated;
   bool get loaded => _loaded;
 
-  String get phoneNumber {
-    return (_authService?.cognitoSession?.idToken?.payload ??
-        {})['phone_number'];
-  }
-
-  String get authToken => _authService?.cognitoSession?.idToken?.jwtToken;
-
-  bool get isAuthTokenValid => _authService?.cognitoSession?.isValid();
+  String get phoneNumber => _authService?.phoneNumber;
 }

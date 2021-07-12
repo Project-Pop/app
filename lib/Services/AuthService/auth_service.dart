@@ -25,11 +25,13 @@ class AuthService {
 
   CognitoUserSession cognitoSession;
 
-  Future<void> initCachedSession({
-    @required String idToken,
-    @required String accessToken,
-    @required String refreshToken,
-  }) async {
+  final _storage = SecureStorage();
+
+  Future<bool> initCachedSession() async {
+    final idToken = await _storage.getIdToken();
+    final accessToken = await _storage.getAccessToken();
+    final refreshToken = await _storage.getRefreshToken();
+
     if (idToken == null || accessToken == null || refreshToken == null) {
       _cognitoUser = null;
       cognitoSession = null;
@@ -47,6 +49,7 @@ class AuthService {
     if (cognitoSession.isValid() == false) {
       await refreshSession();
     }
+    return cognitoSession.isValid();
   }
 
   Future<void> refreshSession() async {
@@ -55,7 +58,6 @@ class AuthService {
     cognitoSession =
         await _cognitoUser.refreshSession(cognitoSession.refreshToken);
 
-    final _storage = SecureStorage();
     await _storage.setIdToken(cognitoSession.idToken.jwtToken);
     await _storage.setAccessToken(cognitoSession.accessToken.jwtToken);
     await _storage.setRefreshToken(cognitoSession.refreshToken.token);
@@ -118,4 +120,10 @@ class AuthService {
       return e.code;
     }
   }
+
+  String get authToken => cognitoSession?.idToken?.jwtToken;
+  bool get isAuthTokenValid => cognitoSession?.isValid();
+
+  String get phoneNumber =>
+      (cognitoSession?.idToken?.payload ?? {})['phone_number'];
 }
