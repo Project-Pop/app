@@ -1,13 +1,14 @@
-import 'dart:math';
-
-import 'package:app/ConfigReader/configReader.dart';
-import 'package:app/UI/Business/Authentication/authHandler.dart';
-import 'package:app/UI/Business/InitProviders/initApiServiceProviders.dart';
-import 'package:app/UI/Views/SignUp/signUpPage.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
-import 'UI/Views/Theme/customTheme.dart';
+// Project imports:
+import 'package:app/ConfigReader/config_reader.dart';
+import 'package:app/UI/Business/Authentication/auth_handler.dart';
+import 'package:app/UI/Business/InitProviders/init_api_service_providers.dart';
+import 'UI/Views/Theme/custom_theme.dart';
 
 Future<void> mainApp(String env) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,26 +33,12 @@ class MyApp extends StatelessWidget {
 }
 
 class TestWidgets extends StatelessWidget {
-  final a = TextEditingController();
-  final b = TextEditingController();
-  final c = TextEditingController();
-  Future<bool> checkUsernameAvailability(String username) async {
-    await Future.delayed(Duration(milliseconds: 300));
-
-    return Random().nextBool();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: CustomTheme.darkTheme,
-      home: SignUpPage(
-        nameController: a,
-        emailController: b,
-        usernameController: c,
-        checkUsernameAvailability: checkUsernameAvailability,
-      ),
+      home: Container(),
     );
   }
 }
