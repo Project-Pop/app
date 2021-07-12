@@ -12,6 +12,7 @@ import 'package:app/ConfigReader/config_reader.dart';
 import 'package:app/Models/index.dart';
 import 'Converters/built_value_converter.dart';
 import 'Interceptors/auth_interceptor.dart';
+import 'Interceptors/connectivity_interceptor.dart';
 
 part 'post_api_service.chopper.dart';
 
@@ -113,6 +114,7 @@ abstract class PostApiService extends ChopperService {
       ],
       converter: BuiltValueConverter(),
       interceptors: [
+        ConnectivityInterceptor(),
         AuthInterceptor(),
         HttpLoggingInterceptor(),
       ],

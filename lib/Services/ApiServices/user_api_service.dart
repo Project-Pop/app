@@ -2,7 +2,7 @@
 import 'dart:io';
 
 // Flutter imports:
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:chopper/chopper.dart';
@@ -10,6 +10,7 @@ import 'package:chopper/chopper.dart';
 // Project imports:
 import 'package:app/ConfigReader/config_reader.dart';
 import 'package:app/Models/index.dart';
+import 'package:app/Services/ApiServices/Interceptors/connectivity_interceptor.dart';
 import 'Converters/built_value_converter.dart';
 import 'Interceptors/auth_interceptor.dart';
 
@@ -68,6 +69,7 @@ abstract class UserApiService extends ChopperService {
       ],
       converter: BuiltValueConverter(),
       interceptors: [
+        ConnectivityInterceptor(),
         AuthInterceptor(),
         HttpLoggingInterceptor(),
       ],

@@ -6,6 +6,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 // Project imports:
 import 'package:app/ConfigReader/config_reader.dart';
+import 'package:app/Services/Connectivity/connectivity_status.dart';
 import 'package:app/UI/Business/Authentication/auth_handler.dart';
 import 'package:app/UI/Business/InitProviders/init_api_service_providers.dart';
 import 'UI/Views/Theme/custom_theme.dart';
@@ -13,7 +14,10 @@ import 'UI/Views/Theme/custom_theme.dart';
 Future<void> mainApp(String env) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await ConfigReader.initialize(env);
+  await Future.wait([
+    ConfigReader.initialize(env),
+    ConnectionStatus.getInstance().initialize()
+  ]);
 
   runApp(Phoenix(child: MyApp()));
   // runApp(TestWidgets());

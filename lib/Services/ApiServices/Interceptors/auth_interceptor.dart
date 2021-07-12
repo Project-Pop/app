@@ -2,8 +2,10 @@
 import 'dart:async';
 
 // Package imports:
-import 'package:app/Services/AuthService/auth_service.dart';
 import 'package:chopper/chopper.dart';
+
+// Project imports:
+import 'package:app/Services/AuthService/auth_service.dart';
 
 class AuthInterceptor implements RequestInterceptor {
   Request removeNull(Request request) {
@@ -23,8 +25,6 @@ class AuthInterceptor implements RequestInterceptor {
     if (request.headers['noAuthRequired'] == 'true') {
       return request;
     } else {
-      // TODO: add auth header
-
       final _authService = AuthService();
       if (_authService.isAuthTokenValid == false) {
         await _authService.initCachedSession();
