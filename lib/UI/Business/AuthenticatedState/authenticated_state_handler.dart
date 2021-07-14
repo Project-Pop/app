@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:app/Providers/index.dart';
+import 'package:app/UI/Business/HomeBase/home_base_handler.dart';
 import 'package:app/UI/Business/InitProviders/init_user_providers.dart';
 import 'package:app/UI/Business/SignUp/sign_up_handler.dart';
 
@@ -22,8 +23,7 @@ class AuthenticatedStateHandler extends StatelessWidget {
             return SignUpHandler();
           }
 
-          // TODO: return home page
-          return loadingWidget;
+          return HomeBaseHandler();
         },
         // TODO: define this loading widget in Views/
         child: const Scaffold(
