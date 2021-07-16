@@ -3,7 +3,7 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
-import 'package:app/ConfigReader/config_reader.dart';
+import 'package:app/Configs/config_reader.dart';
 import 'secure_storage.dart';
 
 class AuthService {
