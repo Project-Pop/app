@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 // Project imports:
-import 'package:app/ConfigReader/config_reader.dart';
+import 'package:app/Configs/config_reader.dart';
 import 'package:app/Services/Connectivity/connectivity_status.dart';
 import 'package:app/UI/Business/Authentication/auth_handler.dart';
 import 'UI/Views/Theme/custom_theme.dart';

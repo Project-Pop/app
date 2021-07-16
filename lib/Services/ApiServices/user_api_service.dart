@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:chopper/chopper.dart';
 
 // Project imports:
-import 'package:app/ConfigReader/config_reader.dart';
+import 'package:app/Configs/config_reader.dart';
 import 'package:app/Models/index.dart';
 import 'package:app/Services/ApiServices/Interceptors/connectivity_interceptor.dart';
 import 'Converters/built_value_converter.dart';
