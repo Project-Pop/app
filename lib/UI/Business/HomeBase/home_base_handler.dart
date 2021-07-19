@@ -26,7 +26,7 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
         Container(),
         Container(),
         Container(),
-        ProfilePage(),
+        //ProfilePage(),
       ],
       bottomNavigationBar: CustomBottomNavigationBar(
         onTap: _navItemTapped,

@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:app/UI/Views/HomeBase/Profile/profile_page.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -18,8 +19,8 @@ Future<void> mainApp(String env) async {
     ConnectionStatus.getInstance().initialize()
   ]);
 
-  runApp(Phoenix(child: MyApp()));
-  // runApp(TestWidgets());
+  //runApp(Phoenix(child: MyApp()));
+  runApp(TestWidgets());
 }
 
 class MyApp extends StatelessWidget {
@@ -37,9 +38,22 @@ class TestWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: CustomTheme.darkTheme,
-      home: Container(),
-    );
+        title: 'Flutter Demo',
+        theme: CustomTheme.darkTheme,
+        home: ProfilePage(
+          postCount: '12',
+          reactCount: '0',
+          viewsCount: '0',
+          imageProfile: Image.network(
+              'https://th.bing.com/th/id/OIP.gDBdAA5pacZzSnpFUHEKPgHaGA?pid=ImgDet&rs=1'),
+          isMine: true,
+          followOrFollowing: Container(),
+          pops: const [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0],
+          cameraPops: const [1, 2, 3, 4, 5],
+          userName: 'michal wade',
+          userTagName: 'xyz@gmail',
+          userUrl: 'xyz@pop',
+          isAlreadyFollow: true,
+        ));
   }
 }
