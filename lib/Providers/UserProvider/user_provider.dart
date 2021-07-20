@@ -2,6 +2,7 @@
 import 'dart:io';
 
 // Flutter imports:
+import 'package:app/Providers/UserProvider/user_provider_interface.dart';
 import 'package:flutter/cupertino.dart';
 
 // Package imports:
@@ -11,7 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:app/Models/index.dart';
 import 'package:app/Services/ApiServices/index.dart';
 
-class UserProvider with ChangeNotifier {
+class UserProvider with ChangeNotifier implements UserProviderInterface {
   UserProvider({@required this.context}) {
     initiate();
   }
@@ -23,6 +24,7 @@ class UserProvider with ChangeNotifier {
 
   UserModel _userModel;
 
+  @override
   Future<void> initiate() async {
     final res = await _userApiService.getMyProfile();
 
@@ -39,6 +41,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   Future<void> signUpNewUser(SignUpModel signUpModel, File avatar) async {
     final res = await _userApiService.signUpNewUser(signUpModel);
     if (res.isSuccessful) {
@@ -54,6 +57,7 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  @override
   Future<bool> isUsernameAvailable(String username) async {
     final res = await _userApiService.isUsernameAvailable(username);
     if (res.isSuccessful) {
@@ -64,6 +68,8 @@ class UserProvider with ChangeNotifier {
     }
     return false;
   }
+
+  // ---------------------getters---------------
 
   bool get loaded => _loaded;
   UserModel get user => _userModel;

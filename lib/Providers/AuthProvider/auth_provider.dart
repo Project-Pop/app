@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:app/Providers/AuthProvider/auth_provider_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:app/Services/AuthService/auth_service.dart';
 import 'package:app/Services/AuthService/secure_storage.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthProvider with ChangeNotifier implements AuthProviderInterface {
   AuthProvider() {
     initiate();
   }
@@ -23,6 +24,7 @@ class AuthProvider with ChangeNotifier {
 
   bool _loaded = false;
 
+  @override
   Future<void> initiate() async {
     await _authService.initCachedSession();
 
@@ -35,6 +37,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   Future<bool> sendOTP(String dialCode, String phoneNumber) async {
     assert(dialCode != null);
     assert(phoneNumber != null);
@@ -53,6 +56,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  @override
   Future<dynamic> submitOTP(String code) async {
     assert(code != null);
     final resp = await _authService.confirmOTP(code);
@@ -74,6 +78,7 @@ class AuthProvider with ChangeNotifier {
     return true;
   }
 
+  @override
   Future<void> logOut(BuildContext context) async {
     await Future.wait([
       _storage.logout(),
@@ -81,6 +86,8 @@ class AuthProvider with ChangeNotifier {
 
     Phoenix.rebirth(context);
   }
+
+  // ----------------------getters---------------------------------
 
   String get userId {
     return (_authService?.cognitoSession?.idToken?.payload ?? {})['sub'];
