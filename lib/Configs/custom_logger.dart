@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 // Project imports:
 import 'package:app/Configs/environment.dart';
 
-class CustomLogger {
+abstract class CustomLogger {
   static Level _level = Level.nothing;
 
   static void initialize(String env, [Level level]) {

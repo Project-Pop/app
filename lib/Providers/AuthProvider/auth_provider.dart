@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:app/Providers/AuthProvider/auth_provider_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +7,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
+import 'package:app/Providers/AuthProvider/auth_provider_interface.dart';
 import 'package:app/Services/AuthService/auth_service.dart';
 import 'package:app/Services/AuthService/secure_storage.dart';
 

@@ -1,5 +1,7 @@
+// Dart imports:
 import 'dart:io';
 
+// Project imports:
 import 'package:app/Models/index.dart';
 
 abstract class UserProviderInterface {
@@ -18,9 +20,8 @@ abstract class UserProviderInterface {
 
   // Future getUserActivities();
 
-  // Future getUserDataByUsername(String username);
+  Future<UserModel> getUserDataByUsername(String username);
 
-  // Future followUser(String remoteUsername);
-  // Future unfollowUser(String remoteUsername);
-
+  Future<bool> followUser(String remoteUsername);
+  Future<bool> unfollowUser(String remoteUsername);
 }
