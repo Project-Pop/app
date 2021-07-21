@@ -1,5 +1,9 @@
 // Flutter imports:
+import 'package:app/UI/Business/HomeBase/home_base_handler.dart';
 import 'package:app/UI/Views/HomeBase/Profile/profile_page.dart';
+import 'package:app/UI/Views/HomeBase/Profile/widgets/custom_profile_button.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/custom_bottom_navigation_bar.dart';
+import 'package:app/UI/Views/HomeBase/home_base.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -40,13 +44,15 @@ class TestWidgets extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: CustomTheme.darkTheme,
-        home: ProfilePage(
+        home: //HomeBaseHandler()
+
+            ProfilePage(
           postCount: '12',
           reactCount: '0',
           viewsCount: '0',
           imageProfile: Image.network(
               'https://th.bing.com/th/id/OIP.gDBdAA5pacZzSnpFUHEKPgHaGA?pid=ImgDet&rs=1'),
-          isMine: true,
+          isMine: false,
           followOrFollowing: Container(),
           pops: const [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0],
           cameraPops: const [1, 2, 3, 4, 5],
@@ -54,6 +60,11 @@ class TestWidgets extends StatelessWidget {
           userTagName: 'xyz@gmail',
           userUrl: 'xyz@pop',
           isAlreadyFollow: true,
+          profileButtonWidget: ProfileButtonWidget(
+            color: Colors.white,
+            name: 'follow',
+            onTap: () {},
+          ),
         ));
   }
 }

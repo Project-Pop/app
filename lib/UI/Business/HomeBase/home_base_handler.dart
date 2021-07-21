@@ -1,4 +1,7 @@
 // Flutter imports:
+import 'package:app/UI/Views/HomeBase/search_page/grid_view_page.dart';
+import 'package:app/UI/Views/HomeBase/search_page/search_page.dart';
+import 'package:app/UI/Views/models/search_user_model.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -23,6 +26,41 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
     return HomeBase(
       controller: _pageController,
       pages: [
+        Container(),
+         SearchPageGridView(
+          popList: [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            67,
+            7,
+          ],
+        ),
+        /* SearchPage(
+          searchRecent: [
+            SearchUser(
+                imgUrl: 'assets/images/profile.png',
+                name: 'xyz',
+                userNAme: 'xuz@gamil'),
+            SearchUser(
+                imgUrl: 'assets/images/profile.png',
+                name: 'xyz',
+                userNAme: 'xuz@gamil')
+          ],
+          searchResults: [
+            SearchUser(
+                imgUrl: 'assets/images/profile.png',
+                name: 'xyz',
+                userNAme: 'xuz@gamil'),
+            SearchUser(
+                imgUrl: 'assets/images/profile.png',
+                name: 'ayz',
+                userNAme: 'xuy@gamil')
+          ],
+        ), */
         Container(),
         Container(),
         Container(),

@@ -1,9 +1,17 @@
 // Flutter imports:
-import 'package:app/UI/Views/HomeBase/Profile/constants/colors.dart';
-import 'package:app/UI/Views/HomeBase/Profile/widgets/follow_widget.dart';
-import 'package:app/UI/Views/HomeBase/Profile/widgets/grid_widget.dart';
+
+import 'package:app/UI/Views/HomeBase/Profile/widgets/cameraView_Grid.dart';
+import 'package:app/UI/Views/HomeBase/Profile/widgets/custom_profile_button.dart';
+import 'package:app/UI/Views/HomeBase/Profile/widgets/popView_grid_widget.dart';
+import 'package:app/UI/Views/HomeBase/Profile/widgets/profile_app_bar.dart';
+import 'package:app/UI/Views/HomeBase/Profile/widgets/profile_header.dart';
+import 'package:app/UI/Views/HomeBase/Profile/widgets/tab_bar_delegate.dart';
+//import 'package:app/UI/Views/HomeBase/Profile/widgets/grid_widget.dart';
+//import 'package:app/UI/Views/HomeBase/Profile/widgets/popView_grid_widget.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+import 'package:app/UI/Views/Theme/constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage(
@@ -18,7 +26,8 @@ class ProfilePage extends StatefulWidget {
       @required this.cameraPops,
       @required this.followOrFollowing,
       @required this.isMine,
-      @required this.isAlreadyFollow});
+      @required this.isAlreadyFollow,
+      this.profileButtonWidget});
 
   final String postCount;
   final String viewsCount;
@@ -31,6 +40,7 @@ class ProfilePage extends StatefulWidget {
   final List cameraPops;
   final bool isMine;
   final bool isAlreadyFollow;
+  final ProfileButtonWidget profileButtonWidget;
 
   final Widget followOrFollowing;
 
@@ -45,205 +55,56 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: getAppBar(),
-      body: getBody(),
-    );
-  }
-
-  Widget getAppBar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(55),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
-          child: Row(children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 32.0),
-                child: Text(widget.userTagName,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold)),
-              ),
-            ),
-            IconButton(
-                onPressed: () {},
-                icon: widget.isMine
-                    ? const Icon(Icons.settings, color: Colors.white, size: 25)
-                    : const Icon(Icons.more_horiz,
-                        color: Colors.white, size: 25))
-          ]),
-        ),
-      ),
-    );
-  }
-
-  Widget getBody() {
-    return ListView(shrinkWrap: true, children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 30.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      radius: 45,
-                      backgroundImage: AssetImage(
-                        'assets/images/profile.png',
+        backgroundColor: Colors.black,
+        appBar: getAppBar(widget.userTagName, widget.isMine),
+        body: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            body: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: HeaderAccountWidget(
+                        postCount: widget.postCount,
+                        viewCount: widget.viewsCount,
+                        reactCount: widget.reactCount,
+                        userName: widget.userName,
+                        profileButtonWidget: widget.profileButtonWidget,
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    Text(widget.userName,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 12)),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      widget.postCount,
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
-                    ),
-                    const Text(
-                      'Posts',
-                      style: TextStyle(fontSize: 10, color: Colors.white),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      widget.viewsCount,
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
-                    ),
-                    const Text(
-                      'Views',
-                      style: TextStyle(fontSize: 10, color: Colors.white),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      widget.reactCount,
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
-                    ),
-                    const Text(
-                      'Reacts',
-                      style: TextStyle(fontSize: 10, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: TabBarSliverPersistentHeaderDelegate(
+                          child: SizedBox(
+                        height: 40,
+                        child: TabBar(
+                          indicatorColor:
+                              Theme.of(context).colorScheme.onBackground,
+                          tabs: [
+                            const Tab(
+                              icon: Icon(
+                                Icons.grid_on,
+                                color: bgWhite,
+                              ),
+                            ),
+                            const Tab(
+                              icon: Icon(
+                                Icons.camera_alt,
+                                color: bgWhite,
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
+                    )
+                  ];
+                },
+                body: TabBarView(children: [popView(), cameraView()])),
           ),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: FollowWidget(
-              color: widget.isMine
-                  ? Colors.grey[900]
-                  : widget.isAlreadyFollow
-                      ? Colors.grey[900]
-                      : bgWhite,
-              name: widget.isMine
-                  ? widget.userUrl
-                  : widget.isAlreadyFollow
-                      ? 'following'
-                      : 'follow',
-            ),
-          ),
-        ],
-      ),
-      Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                height: 1,
-                width: MediaQuery.of(context).size.width / 2,
-                decoration: BoxDecoration(
-                    color: selectedIndex == 0 ? bgWhite : Colors.black),
-              ),
-              Container(
-                height: 1,
-                width: MediaQuery.of(context).size.width / 2,
-                decoration: BoxDecoration(
-                    color: selectedIndex == 1 ? bgWhite : Colors.black),
-              ),
-            ],
-          ),
-        ],
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              child: Column(
-                children: [
-                  IconButton(
-                    splashRadius: 20,
-                    icon: Icon(
-                      FontAwesome.th,
-                      color: selectedIndex == 0
-                          ? textWhite
-                          : textWhite.withOpacity(0.5),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedIndex = 0;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: IconButton(
-                    splashRadius: 20,
-                    icon: Icon(
-                      FontAwesome.camera,
-                      color: selectedIndex == 1
-                          ? textWhite
-                          : textWhite.withOpacity(0.5),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedIndex = 1;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      IndexedStack(
-        index: selectedIndex,
-        children: [popView(selectedIndex), cameraView(selectedIndex)],
-      ),
-      
-    ]);
+        ));
   }
 
-  Widget popView(int selectedIndex) {
+  Widget popView() {
     if (widget.pops.isNotEmpty) {
       return Column(children: [
         DyamicGridView(
@@ -267,19 +128,22 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'No Pops of you yet',
+            const MyText(
+              msg: 'No Pops of you yet',
               textAlign: TextAlign.center,
-              style: TextStyle(color: bgWhite, fontSize: 20),
+              textStyle: TextStyle(color: bgWhite, fontSize: 22),
+              maxLines: 1,
+              textScaleFactor: 1.8,
             ),
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'When you get popped,they will \n appear here on profile',
+            const MyText(
+              msg: 'When you get popped,they will \n appear here on profile',
               maxLines: 2,
               textAlign: TextAlign.center,
-              style: TextStyle(color: bgWhite, fontSize: 10),
+              textStyle: TextStyle(color: bgWhite, fontSize: 12),
+              textScaleFactor: 1.3,
             )
           ],
         ),
@@ -287,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Widget cameraView(int selectedIndex) {
+  Widget cameraView() {
     if (widget.cameraPops.isNotEmpty) {
       return Column(children: [
         DyamicGridViewForCameraPops(
@@ -311,19 +175,20 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'No Pops of you yet',
+            const MyText(
+              msg: 'No Pops of you yet',
               textAlign: TextAlign.center,
-              style: TextStyle(color: bgWhite, fontSize: 20),
+              textStyle: TextStyle(color: bgWhite, fontSize: 22),
+              maxLines: 1,
             ),
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              'When you get popped,they will \n appear here on profile',
+            const MyText(
+              msg: 'When you get popped,they will \n appear here on profile',
               maxLines: 2,
               textAlign: TextAlign.center,
-              style: TextStyle(color: bgWhite, fontSize: 10),
+              textStyle: TextStyle(color: bgWhite, fontSize: 10),
             )
           ],
         ),
