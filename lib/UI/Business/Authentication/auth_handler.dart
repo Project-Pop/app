@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:app/Providers/auth_provider.dart';
+import 'package:app/Providers/index.dart';
 import 'package:app/UI/Business/AuthenticatedState/authenticated_state_handler.dart';
 import 'package:app/UI/Business/InitProviders/init_auth_provider.dart';
 import 'package:app/UI/Views/Authentication/login_page.dart';
