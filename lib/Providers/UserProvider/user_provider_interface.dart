@@ -24,4 +24,6 @@ abstract class UserProviderInterface {
 
   Future<bool> followUser(String remoteUsername);
   Future<bool> unfollowUser(String remoteUsername);
+
+  Future<List<MinimalUserModel>> searchUsers(String searchString);
 }

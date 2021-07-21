@@ -113,6 +113,18 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
     }
   }
 
+  @override
+  Future<List<MinimalUserModel>> searchUsers(String searchString) async {
+    final res = await _userApiService.searchUsers(searchString);
+    if (res.isSuccessful) {
+      return res.body;
+    } else {
+      _logger.e('error in searching for users '
+          'code:${res.statusCode}, error:${res.error}');
+      return [];
+    }
+  }
+
   // ---------------------getters---------------
 
   bool get loaded => _loaded;
