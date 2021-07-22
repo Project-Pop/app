@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar(
@@ -26,6 +27,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       activeIcon: _buildNavIcon(iconData, true),
       label: '',
       backgroundColor: Colors.black,
+      
     );
   }
 
@@ -41,7 +43,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     final navItems = <BottomNavigationBarItem>[
       _buildNavItem(Icons.home),
       _buildNavItem(Icons.search),
-      _buildNavItem(Icons.notifications),
+      _buildNavItem(Icons.camera_alt_outlined),
+      _buildNavItem(FlutterIcons.heart_evi),
       _buildNavItem(Icons.person),
     ];
 
