@@ -66,9 +66,9 @@ abstract class UserApiService extends ChopperService {
   @Post(path: '/username-availability')
   Future<Response<bool>> isUsernameAvailable(@Query() String username);
 
-  // TODO: sync this api
-  // @Get(path:"/search")
-  // Future<Response> searchUsers();
+  @Get(path: '/search')
+  Future<Response<List<MinimalUserModel>>> searchUsers(
+      @Query() String searchString);
 
   @Get(path: '/activities')
   Future<Response<List<ActivityModel>>> getUserActivityList();

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:app/Providers/user_provider.dart';
+import 'package:app/Providers/index.dart';
 
 class InitUserProviders extends StatelessWidget {
   const InitUserProviders({this.child});
