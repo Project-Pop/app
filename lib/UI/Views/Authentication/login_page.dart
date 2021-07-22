@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:app/Configs/custom_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -26,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _dialCode;
 
+  final _logger = CustomLogger.logger(LoginPage);
+
   // for auto retrieval of sms code
   Future<void> _listenForCode() async {
     await SmsAutoFill().listenForCode;
@@ -37,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
     // which to be received in otp messages for auto retrieval
     SmsAutoFill().getAppSignature.then((value) {
       for (int i = 0; i < 10; i++) {
-        print('app signature : $value');
+        _logger.v('app signature : $value');
       }
     });
 
