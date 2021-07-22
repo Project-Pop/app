@@ -14,9 +14,7 @@ import 'package:app/Providers/UserProvider/user_provider_interface.dart';
 import 'package:app/Services/ApiServices/index.dart';
 
 class UserProvider with ChangeNotifier implements UserProviderInterface {
-  UserProvider({@required this.context}) {
-    initiate();
-  }
+  UserProvider({@required this.context});
 
   bool _loaded = false;
 
@@ -117,7 +115,7 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   Future<List<MinimalUserModel>> searchUsers(String searchString) async {
     final res = await _userApiService.searchUsers(searchString);
     if (res.isSuccessful) {
-      return res.body;
+      return res.body.toList();
     } else {
       _logger.e('error in searching for users '
           'code:${res.statusCode}, error:${res.error}');

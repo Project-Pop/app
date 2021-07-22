@@ -7,14 +7,18 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:app/Providers/index.dart';
 
-class InitUserProviders extends StatelessWidget {
-  const InitUserProviders({this.child});
+class InitProviders extends StatelessWidget {
+  const InitProviders({this.child});
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider(),
+          child: child,
+        ),
         ChangeNotifierProvider(
           create: (context) => UserProvider(context: context),
         ),

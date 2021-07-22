@@ -1,20 +1,43 @@
-import 'package:app/UI/Views/HomeBase/Profile/widgets/popView_grid_widget.dart';
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Profile/widgets/pop_view_grid_widget.dart';
 import 'package:app/UI/Views/HomeBase/search_page/search_page.dart';
 import 'package:app/UI/Views/Theme/constants/colors.dart';
 import 'package:app/UI/Views/models/search_user_model.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
 class SearchPageGridView extends StatefulWidget {
-  const SearchPageGridView({Key key, this.popList}) : super(key: key);
+  const SearchPageGridView({
+    Key key,
+    @required this.popList,
+    @required this.recentSearches,
+    @required this.searchUsers,
+    @required this.onTappingProfile,
+  }) : super(key: key);
   final List popList;
-
+  final List<SearchUser> recentSearches;
+  final Future<List<SearchUser>> Function(String searchString) searchUsers;
+  final Function(BuildContext, String username) onTappingProfile;
   @override
   _SearchPageGridViewState createState() => _SearchPageGridViewState();
 }
 
 class _SearchPageGridViewState extends State<SearchPageGridView> {
+  void _navigateToSearchPage() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return SearchPage(
+        changeView: true,
+        searchRecent: widget.recentSearches,
+        searchUsers: widget.searchUsers,
+        onTappingProfile: widget.onTappingProfile,
+      );
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,34 +62,7 @@ class _SearchPageGridViewState extends State<SearchPageGridView> {
                                   const BorderRadius.all(Radius.circular(12.0)),
                             ),
                             child: InkWell(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (_) {
-                                  return const SearchPage(
-                                    changeView: true,
-                                    searchRecent: [
-                                      SearchUser(
-                                          imgUrl: 'assets/images/profile.png',
-                                          name: 'xyz',
-                                          userNAme: 'xuz@gamil'),
-                                      SearchUser(
-                                          imgUrl: 'assets/images/profile.png',
-                                          name: 'xyz',
-                                          userNAme: 'xuz@gamil')
-                                    ],
-                                    searchResults: [
-                                      SearchUser(
-                                          imgUrl: 'assets/images/profile.png',
-                                          name: 'xyz',
-                                          userNAme: 'xuz@gamil'),
-                                      SearchUser(
-                                          imgUrl: 'assets/images/profile.png',
-                                          name: 'ayz',
-                                          userNAme: 'xuy@gamil')
-                                    ],
-                                  );
-                                }));
-                              },
+                              onTap: () => _navigateToSearchPage(),
                               child: const TextField(
                                 enabled: false,
                                 decoration: InputDecoration(

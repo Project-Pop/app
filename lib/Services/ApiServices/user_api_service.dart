@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 // Package imports:
+import 'package:built_collection/built_collection.dart';
 import 'package:chopper/chopper.dart';
 
 // Project imports:
@@ -67,7 +68,7 @@ abstract class UserApiService extends ChopperService {
   Future<Response<bool>> isUsernameAvailable(@Query() String username);
 
   @Get(path: '/search')
-  Future<Response<List<MinimalUserModel>>> searchUsers(
+  Future<Response<BuiltList<MinimalUserModel>>> searchUsers(
       @Query() String searchString);
 
   @Get(path: '/activities')
