@@ -22,7 +22,7 @@ class HomeBaseHandler extends StatelessWidget {
       controller: _pageController,
       pages: [
         Container(),
-         SearchPageGridView(
+        SearchPageGridView(
           popList: [
             1,
             2,
@@ -58,12 +58,7 @@ class HomeBaseHandler extends StatelessWidget {
         ), */
         Container(),
         Container(),
-<<<<<<< HEAD
-        Container(),
-        //ProfilePage(),
-=======
         ProfilePageHandler(),
->>>>>>> remotes/origin/development
       ],
       bottomNavigationBar: CustomBottomNavigationBar(
         onTap: _navItemTapped,
