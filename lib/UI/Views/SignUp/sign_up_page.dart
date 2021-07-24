@@ -2,12 +2,13 @@
 import 'dart:io';
 
 // Flutter imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+import 'package:app/UI/Views/SignUp/take_username.dart';
+import 'package:app/UI/Views/SignUp/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 // Package imports:
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -66,29 +67,16 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  Future<void> _getImage() async {
-    final picker = ImagePicker();
-
-    final selectedImage = await picker.getImage(source: ImageSource.gallery);
-    if (selectedImage != null) {
-      final croppedImage = await ImageCropper.cropImage(
-          cropStyle: CropStyle.circle,
-          sourcePath: selectedImage.path,
-          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-          compressQuality: 50,
-          maxHeight: 400,
-          maxWidth: 400,
-          compressFormat: ImageCompressFormat.jpg,
-          androidUiSettings: AndroidUiSettings(
-              statusBarColor: Colors.redAccent,
-              cropFrameColor: Colors.grey[600],
-              backgroundColor: Colors.white,
-              toolbarColor: Colors.white));
-      setState(() {
-        if (croppedImage != null) {
-          _avatar = File(croppedImage.path);
-        }
-      });
+  void checkFields() {
+    if (widget.nameController.text != null) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+        return UserName(
+          usernameController: widget.usernameController,
+          checkUsernameAvailability: widget.checkUsernameAvailability,
+        );
+      }));
+    } else {
+      Fluttertoast.showToast(msg: 'Please, Enter Your Name');
     }
   }
 
@@ -99,239 +87,84 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Scaffold(
         body: Form(
           key: widget.formKey,
-          child: ListView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, size.height / 50, 0, 0),
-                  child: GestureDetector(
-                    onTap: _getImage,
-                    behavior: HitTestBehavior.deferToChild,
-                    child: CircleAvatar(
-                      radius: size.width / 5,
-                      backgroundColor: Colors.white24,
-                      child: CircleAvatar(
-                        radius: size.width / 5.3,
-                        backgroundImage:
-                            _avatar == null ? null : FileImage(_avatar),
-                        backgroundColor: Colors.black45,
-                        child: _avatar == null
-                            ? Icon(
-                                Icons.add_a_photo,
-                                size: size.width / 15,
-                                color: Colors.green,
-                              )
-                            : Align(
-                                alignment: Alignment.topRight,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _avatar = null;
-                                    setState(() {});
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    child: Icon(
-                                      Icons.cancel,
-                                      color: Colors.redAccent,
-                                      size: size.width / 15,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ),
-                  ),
-                ),
+              const HeadingText(
+                textAlign: TextAlign.center,
+                msg: 'Whats Your Name!!',
+                textStyle: TextStyle(
+                    color: Colors.green,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 12.0, vertical: 16.0),
-                child: Column(children: [
-                  TextFormField(
-                    controller: widget.nameController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: 'NAME',
-                      labelStyle: TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[400]),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                    validator: (val) {
-                      if (val.isEmpty) return 'Please fill this field';
-                      if (val.length < 3) return 'Minimum length should be 3';
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextFormField(
+                          autofocus: true,
+                          textAlign: TextAlign.center,
+                          controller: widget.nameController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green),
+                            ),
+                          ),
+                          validator: (val) {
+                            if (val.isEmpty) return 'Please fill this field';
+                            if (val.length < 3) {
+                              return 'Minimum length should be 3';
+                            }
 
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: size.height / 50),
-                  Column(children: [
-                    TextFormField(
-                      controller: widget.usernameController,
-                      style: const TextStyle(color: Colors.white),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            RegExp('[a-zA-Z0-9_]')),
-                      ],
-                      decoration: InputDecoration(
-                          labelText: 'USER NAME ',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[400]),
-                          helperText: widget.usernameController.text.length >= 3
-                              ? usernameAvailable
-                                  ? 'Username is available'
-                                  : 'Username is not available'
-                              : 'Allowed Characters: a-z 0-9 _ (Min length: 3)',
-                          helperStyle: !usernameAvailable ||
-                                  widget.usernameController.text.length < 3
-                              ? const TextStyle(
-                                  fontFamily: 'Lato', color: Colors.red)
-                              : const TextStyle(
-                                  fontFamily: 'Lato', color: Colors.green),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: widget
-                                          .usernameController.text.length >
-                                      3
-                                  ? usernameAvailable
-                                      ? const BorderSide(color: Colors.green)
-                                      : const BorderSide(
-                                          color: Colors.redAccent)
-                                  : const BorderSide(color: Colors.redAccent))),
-                      textInputAction: TextInputAction.done,
-                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                      maxLength: 25,
-                      onChanged: (val) async {
-                        if (val.isEmpty || val.length < 3) {
-                          usernameAvailable = false;
-                          return;
-                        }
-                        val = val.toLowerCase();
-
-                        usernameAvailable =
-                            await widget.checkUsernameAvailability(val);
-                        setState(() {});
-                      },
-                      validator: (val) {
-                        if (val.isEmpty) return 'Please fill this field';
-                        if (val.length < 3) return 'Minimum length should be 3';
-
-                        return null;
-                      },
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        usernameAvailable == true
-                            ? 'This username can not be changed later'
-                            : '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
+                            return null;
+                          },
                         ),
                       ),
-                    ),
-                  ]),
-                  SizedBox(height: size.height / 50),
-                  TextFormField(
-                    controller: widget.emailController,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                        labelText: 'EMAIL',
-                        hintText: 'Your email address',
-                        hintStyle: TextStyle(
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w200,
-                            color: Colors.grey[400]),
-                        labelStyle: TextStyle(
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[400]),
-                        focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red))),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _selectDate();
-                    },
-                    child: TextFormField(
-                      controller: _selectedDate == null
-                          ? null
-                          : TextEditingController(
-                              text: DateFormat.yMMMMd('en_US')
-                                  .format(_selectedDate)),
-                      style: const TextStyle(color: Colors.white),
-                      enabled: false,
-                      decoration: InputDecoration(
-                          labelText: 'DOB',
-                          hintText: '',
-                          hintStyle: TextStyle(
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.w200,
-                              color: Colors.grey[400]),
-                          labelStyle: TextStyle(
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[400]),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red))),
-                    ),
-                  ),
-                ]),
+                      SizedBox(height: size.height / 50),
+                      /*GestureDetector(
+                      onTap: () {
+                        _selectDate();
+                      },
+                      child: TextFormField(
+                        controller: _selectedDate == null
+                            ? null
+                            : TextEditingController(
+                                text: DateFormat.yMMMMd('en_US')
+                                    .format(_selectedDate)),
+                        style: const TextStyle(color: Colors.white),
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: 'DOB',
+                            hintText: '',
+                            hintStyle: TextStyle(
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w200,
+                                color: Colors.grey[400]),
+                            labelStyle: TextStyle(
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[400]),
+                            focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red))),
+                      ),
+                    ),*/
+                    ]),
               ),
               const SizedBox(height: 50),
-              InkWell(
-                onTap: () => widget.signUpUser(
-                  dob: _selectedDate,
-                  avatar: _avatar,
+              CustomButtons(
+                icon: const Icon(
+                  FlutterIcons.arrow_alt_circle_right_faw5,
+                  size: 60,
                 ),
-                child: SizedBox(
-                    height: 40.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.greenAccent,
-                      color: Colors.green,
-                      elevation: 4.0,
-                      child: const Center(
-                        child: Text(
-                          'SUBMIT',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Lato'),
-                        ),
-                      ),
-                    )),
-              ),
-              const SizedBox(height: 32),
-              InkWell(
-                onTap: () async {
-                  // TODO:
-                  //Progress Indicator here
-                  await widget.logOut();
+                onTap: () {
+                  checkFields();
                 },
-                child: SizedBox(
-                    height: size.height / 20,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.redAccent,
-                      color: Colors.white,
-                      elevation: 7.0,
-                      child: const Center(
-                        child: Text(
-                          'LOG OUT',
-                          style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Lato'),
-                        ),
-                      ),
-                    )),
               ),
             ],
           ),
@@ -340,3 +173,8 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
+
+/*onTap: () => widget.signUpUser(
+                  dob: _selectedDate,
+                  avatar: _avatar,
+                ),*/

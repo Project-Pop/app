@@ -1,7 +1,9 @@
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+import 'package:app/UI/Views/HomeBase/settings_page/setting.dart';
 import 'package:flutter/material.dart';
 
-Widget getAppBar(String userTagName, bool isMine) {
+Widget getAppBar(String userTagName, bool isMine, BuildContext context,
+    String name, String userName, Image profile) {
   return PreferredSize(
     preferredSize: const Size.fromHeight(55),
     child: SafeArea(
@@ -23,11 +25,20 @@ Widget getAppBar(String userTagName, bool isMine) {
               ),
             ),
           ),
-          IconButton(
-              onPressed: () {},
-              icon: isMine
-                  ? const Icon(Icons.settings, color: Colors.white, size: 25)
-                  : const Icon(Icons.more_horiz, color: Colors.white, size: 25))
+          if (isMine)
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                    return SettingsPage(
+                        name: name, userAvatar: profile, userNmae: userName);
+                  }));
+                },
+                icon: const Icon(Icons.settings, color: Colors.white, size: 25))
+          else
+            IconButton(
+                onPressed: () {},
+                icon:
+                    const Icon(Icons.more_horiz, color: Colors.white, size: 25))
         ]),
       ),
     ),

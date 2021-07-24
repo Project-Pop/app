@@ -1,4 +1,3 @@
-
 import 'package:app/UI/Views/HomeBase/Profile/widgets/popView_grid_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -11,7 +10,7 @@ class DyamicGridViewForCameraPops extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 450,
+      height: MediaQuery.of(context).size.height * 0.45,
       child: StaggeredGridView.countBuilder(
         // shrinkWrap: true,
         crossAxisCount: 3,

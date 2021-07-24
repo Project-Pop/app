@@ -12,7 +12,6 @@ import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 import 'package:app/UI/Views/Theme/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage(
       {@required this.postCount,
@@ -56,7 +55,8 @@ class _ProfilePageState extends State<ProfilePage> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.black,
-        appBar: getAppBar(widget.userTagName, widget.isMine),
+        appBar: getAppBar(widget.userTagName, widget.isMine, context,
+            widget.userName, widget.userTagName, widget.imageProfile),
         body: DefaultTabController(
           length: 2,
           child: Scaffold(

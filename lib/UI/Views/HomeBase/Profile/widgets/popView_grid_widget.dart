@@ -46,7 +46,7 @@ class DyamicGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 450,
+      height: MediaQuery.of(context).size.height * 0.49,
       child: StaggeredGridView.countBuilder(
         physics: const NeverScrollableScrollPhysics(),
         //shrinkWrap: true,
