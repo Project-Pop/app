@@ -1,17 +1,26 @@
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-
-import 'package:app/UI/Views/Theme/constants/colors.dart';
-import 'package:app/UI/Views/models/search_user_model.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_icons/flutter_icons.dart';
 
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+import 'package:app/UI/Views/Theme/constants/colors.dart';
+import 'package:app/UI/Views/models/search_user_model.dart';
+
 class SearchPage extends StatefulWidget {
-  const SearchPage(
-      {Key key, this.searchResults, this.searchRecent, this.changeView})
-      : super(key: key);
-  final List<SearchUser> searchResults;
+  const SearchPage({
+    Key key,
+    this.searchUsers,
+    this.searchRecent,
+    this.changeView,
+    this.onTappingProfile,
+  }) : super(key: key);
+  final Future<List<SearchUser>> Function(String searchString) searchUsers;
   final List<SearchUser> searchRecent;
   final bool changeView;
+  final Function(BuildContext, String username) onTappingProfile;
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -19,8 +28,9 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   bool isSearchTap = false;
-  bool isGridScreen = true;
   List<SearchUser> searchwiseresult = [];
+
+  bool _fetchingSearchResults = false;
 
   @override
   void initState() {
@@ -38,7 +48,11 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   //function for search functionality
-  void searchResult(String value) {
+  Future<void> searchResult(String value) async {
+    setState(() {
+      _fetchingSearchResults = true;
+    });
+
     List<SearchUser> tempList = [];
 
     if (value == '') {
@@ -46,21 +60,11 @@ class _SearchPageState extends State<SearchPage> {
         tempList = widget.searchRecent;
       });
     } else {
-      for (final user in widget.searchResults) {
-        if (user.name.contains(value)) {
-          setState(() {
-            //searchwiseresult = [];
-            tempList.add(user);
-          });
-        } else {
-          const Center(
-            child: Text('No Product Availabel'),
-          );
-        }
-      }
+      tempList = await widget.searchUsers(value);
     }
     setState(() {
       searchwiseresult = tempList;
+      _fetchingSearchResults = false;
     });
   }
 
@@ -91,7 +95,6 @@ class _SearchPageState extends State<SearchPage> {
                             onChanged: (value) {
                               searchResult(value);
                               isSearchTap = false;
-                              isGridScreen = false;
                             },
                             keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
@@ -110,7 +113,10 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 )),
           ),
-          searchResults()
+          if (_fetchingSearchResults)
+            const Center(child: CircularProgressIndicator())
+          else
+            searchResults()
         ],
       ),
     ));
@@ -118,58 +124,58 @@ class _SearchPageState extends State<SearchPage> {
 
 //display recent searches or search results
   Widget searchResults() {
+    final userList = isSearchTap ? widget.searchRecent : searchwiseresult;
     return ListView.builder(
         shrinkWrap: true,
-        itemCount:
-            isSearchTap ? widget.searchRecent.length : searchwiseresult.length,
+        itemCount: userList.length,
         itemBuilder: (_, index) {
-          isGridScreen = true;
+          final user = userList[index];
           return Padding(
             padding: const EdgeInsets.only(top: 12.0, left: 18),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage(
-                    isSearchTap
-                        ? widget.searchRecent[index].imgUrl
-                        : searchwiseresult[index].imgUrl,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MyText(
-                        msg: isSearchTap
-                            ? widget.searchRecent[index].userNAme
-                            : searchwiseresult[index].userNAme,
-                        textStyle: const TextStyle(color: Colors.white),
-                      ),
-                      MyText(
-                          msg: isSearchTap
-                              ? widget.searchRecent[index].name
-                              : searchwiseresult[index].name,
-                          textStyle: const TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(
-                        FlutterIcons.cross_ent,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                      onPressed: () {},
+            child: GestureDetector(
+              onTap: () => widget.onTappingProfile(context, user.username),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage(
+                      user.imgUrl,
                     ),
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MyText(
+                          msg: user.username,
+                          textStyle: const TextStyle(color: Colors.white),
+                        ),
+                        MyText(
+                            msg: user.name,
+                            textStyle: const TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  ),
+
+                  // showing option to delete from recent searches only
+                  if (isSearchTap)
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: const Icon(
+                            FlutterIcons.cross_ent,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+                    )
+                ],
+              ),
             ),
           );
         });

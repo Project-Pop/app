@@ -1,6 +1,9 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:app/UI/Views/HomeBase/Profile/widgets/custom_profile_button.dart';
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-import 'package:flutter/material.dart';
 
 class HeaderAccountWidget extends StatelessWidget {
   const HeaderAccountWidget(
@@ -8,14 +11,14 @@ class HeaderAccountWidget extends StatelessWidget {
       this.postCount,
       this.reactCount,
       this.viewCount,
-      this.userName,
+      this.name,
       this.profileButtonWidget})
       : super(key: key);
 
   final String postCount;
   final String viewCount;
   final String reactCount;
-  final String userName;
+  final String name;
   final ProfileButtonWidget profileButtonWidget;
 
   @override
@@ -44,12 +47,11 @@ class HeaderAccountWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     MyText(
-                      msg: userName,
+                      msg: name,
                       textStyle:
                           const TextStyle(color: Colors.white, fontSize: 14),
                       maxLines: 1,
                       textScaleFactor: 1.3,
-                    
                     ),
                   ],
                 ),

@@ -21,6 +21,7 @@ part 'api_serializers.g.dart';
   TagApprovalModel,
   PostReactionModel,
   CommentModel,
+  MinimalUserModel,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

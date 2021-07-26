@@ -1,9 +1,11 @@
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+// Flutter imports:
 import 'package:app/UI/Views/HomeBase/settings_page/setting.dart';
 import 'package:flutter/material.dart';
 
-Widget getAppBar(String userTagName, bool isMine, BuildContext context,
-    String name, String userName, Image profile) {
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+
+Widget getAppBar(String username, bool isMine) {
   return PreferredSize(
     preferredSize: const Size.fromHeight(55),
     child: SafeArea(
@@ -14,7 +16,7 @@ Widget getAppBar(String userTagName, bool isMine, BuildContext context,
             child: Padding(
               padding: const EdgeInsets.only(left: 32.0),
               child: MyText(
-                msg: userTagName,
+                msg: username,
                 textAlign: TextAlign.center,
                 textStyle: const TextStyle(
                     color: Colors.white,

@@ -1,47 +1,44 @@
 // Flutter imports:
 
-import 'package:app/UI/Views/HomeBase/Profile/widgets/cameraView_Grid.dart';
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Profile/widgets/camera_view_grid.dart';
 import 'package:app/UI/Views/HomeBase/Profile/widgets/custom_profile_button.dart';
-import 'package:app/UI/Views/HomeBase/Profile/widgets/popView_grid_widget.dart';
+import 'package:app/UI/Views/HomeBase/Profile/widgets/pop_view_grid_widget.dart';
 import 'package:app/UI/Views/HomeBase/Profile/widgets/profile_app_bar.dart';
 import 'package:app/UI/Views/HomeBase/Profile/widgets/profile_header.dart';
 import 'package:app/UI/Views/HomeBase/Profile/widgets/tab_bar_delegate.dart';
-//import 'package:app/UI/Views/HomeBase/Profile/widgets/grid_widget.dart';
-//import 'package:app/UI/Views/HomeBase/Profile/widgets/popView_grid_widget.dart';
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 import 'package:app/UI/Views/Theme/constants/colors.dart';
-import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage(
-      {@required this.postCount,
-      @required this.viewsCount,
-      @required this.reactCount,
-      @required this.imageProfile,
-      @required this.userName,
-      @required this.userUrl,
-      @required this.userTagName,
-      @required this.pops,
-      @required this.cameraPops,
-      @required this.followOrFollowing,
-      @required this.isMine,
-      @required this.isAlreadyFollow,
-      this.profileButtonWidget});
+  const ProfilePage({
+    @required this.postCount,
+    @required this.viewsCount,
+    @required this.reactCount,
+    @required this.imageProfile,
+    @required this.name,
+    @required this.userUrl,
+    @required this.username,
+    @required this.pops,
+    @required this.cameraPops,
+    @required this.isMine,
+    @required this.profileButtonWidget,
+  });
 
   final String postCount;
   final String viewsCount;
   final String reactCount;
   final Image imageProfile;
-  final String userName;
+  final String name;
   final String userUrl;
-  final String userTagName;
+  final String username;
   final List pops;
   final List cameraPops;
   final bool isMine;
-  final bool isAlreadyFollow;
   final ProfileButtonWidget profileButtonWidget;
-
-  final Widget followOrFollowing;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -52,11 +49,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.black,
-        appBar: getAppBar(widget.userTagName, widget.isMine, context,
-            widget.userName, widget.userTagName, widget.imageProfile),
+        appBar: getAppBar(widget.username, widget.isMine),
         body: DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -68,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         postCount: widget.postCount,
                         viewCount: widget.viewsCount,
                         reactCount: widget.reactCount,
-                        userName: widget.userName,
+                        name: widget.name,
                         profileButtonWidget: widget.profileButtonWidget,
                       ),
                     ),
@@ -80,14 +75,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: TabBar(
                           indicatorColor:
                               Theme.of(context).colorScheme.onBackground,
-                          tabs: [
-                            const Tab(
+                          tabs: const [
+                            Tab(
                               icon: Icon(
                                 Icons.grid_on,
                                 color: bgWhite,
                               ),
                             ),
-                            const Tab(
+                            Tab(
                               icon: Icon(
                                 Icons.camera_alt,
                                 color: bgWhite,

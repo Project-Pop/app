@@ -6,9 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:app/Providers/auth_provider.dart';
+import 'package:app/Providers/index.dart';
 import 'package:app/UI/Business/AuthenticatedState/authenticated_state_handler.dart';
-import 'package:app/UI/Business/InitProviders/init_auth_provider.dart';
 import 'package:app/UI/Views/Authentication/login_page.dart';
 import 'package:app/UI/Views/Authentication/otp_box.dart';
 
@@ -68,27 +67,25 @@ class _AuthHandlerState extends State<AuthHandler> {
 
   @override
   Widget build(BuildContext context) {
-    return InitAuthProvider(
-      child: Consumer<AuthProvider>(
-        builder: (context, authProvider, loadingWidget) {
-          _authProvider = authProvider;
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, loadingWidget) {
+        _authProvider = authProvider;
 
-          if (authProvider.loaded == false) {
-            return loadingWidget;
-          }
+        if (authProvider.loaded == false) {
+          return loadingWidget;
+        }
 
-          if (authProvider.isAuthenticated == false) {
-            return LoginPage(sendOtp: _sendOtp);
-          }
+        if (authProvider.isAuthenticated == false) {
+          return LoginPage(sendOtp: _sendOtp);
+        }
 
-          return AuthenticatedStateHandler();
-        },
+        return AuthenticatedStateHandler();
+      },
 
-        // TODO: define this loading widget in Views/
-        child: const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
+      // TODO: define this loading widget in Views/
+      child: const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );

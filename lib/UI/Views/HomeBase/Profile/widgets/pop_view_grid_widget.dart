@@ -1,6 +1,11 @@
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 
 Widget cardPop() {
   return Container(
@@ -22,9 +27,9 @@ Widget addPhotoWidget() {
     child: Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.add_a_photo, color: Colors.white, size: 25),
-        const Padding(
+      children: const [
+        Icon(Icons.add_a_photo, color: Colors.white, size: 25),
+        Padding(
           padding: EdgeInsets.all(8.0),
           child: MyText(
               msg: 'Add Photo',
