@@ -11,7 +11,7 @@ class ShowFollowers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: settingsAppBar('Followers',context),
+      appBar: settingsAppBar('Followers', context),
       body: ListView.builder(
           itemCount: followersList.length,
           itemBuilder: (context, index) {
@@ -34,7 +34,7 @@ class ShowFollowers extends StatelessWidget {
                           textStyle: const TextStyle(color: Colors.white),
                         ),
                         MyText(
-                            msg: followersList[index].userNAme,
+                            msg: followersList[index].username,
                             textStyle: const TextStyle(color: Colors.white)),
                       ],
                     ),

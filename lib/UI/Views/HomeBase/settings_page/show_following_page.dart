@@ -11,7 +11,7 @@ class ShowFollowing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: settingsAppBar('Following',context),
+      appBar: settingsAppBar('Following', context),
       body: ListView.builder(
           itemCount: followingList.length,
           itemBuilder: (context, index) {
@@ -34,7 +34,7 @@ class ShowFollowing extends StatelessWidget {
                           textStyle: const TextStyle(color: Colors.white),
                         ),
                         MyText(
-                            msg: followingList[index].userNAme,
+                            msg: followingList[index].username,
                             textStyle: const TextStyle(color: Colors.white)),
                       ],
                     ),

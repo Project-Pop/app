@@ -1,24 +1,27 @@
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-import 'package:app/UI/Views/SignUp/take_profile_image.dart';
 import 'package:app/UI/Views/SignUp/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class UserName extends StatefulWidget {
-  const UserName(
-      {Key key, this.usernameController, this.checkUsernameAvailability})
-      : super(key: key);
+class TakeUsername extends StatefulWidget {
+  const TakeUsername({
+    Key key,
+    @required this.usernameController,
+    @required this.checkUsernameAvailability,
+    @required this.addUsername,
+  }) : super(key: key);
 
   final TextEditingController usernameController;
   final Future<bool> Function(String username) checkUsernameAvailability;
+  final Function({@required bool available}) addUsername;
+
   @override
-  _UserNameState createState() => _UserNameState();
+  _TakeUsernameState createState() => _TakeUsernameState();
 }
 
-class _UserNameState extends State<UserName> {
-  bool usernameAvailable = false;
+class _TakeUsernameState extends State<TakeUsername> {
+  bool _usernameAvailable = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -30,7 +33,7 @@ class _UserNameState extends State<UserName> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const HeadingText(
-              msg: 'Select Your Display Name!!',
+              msg: 'Select Your Username!!',
               textAlign: TextAlign.center,
               textStyle: TextStyle(
                   fontSize: 26,
@@ -47,18 +50,18 @@ class _UserNameState extends State<UserName> {
               ],
               decoration: InputDecoration(
                   helperText: widget.usernameController.text.length >= 3
-                      ? usernameAvailable
+                      ? _usernameAvailable
                           ? 'Username is available'
                           : 'Username is not available'
                       : 'Allowed Characters: a-z 0-9 _ (Min length: 3)',
-                  helperStyle: !usernameAvailable ||
+                  helperStyle: !_usernameAvailable ||
                           widget.usernameController.text.length < 3
                       ? const TextStyle(fontFamily: 'Lato', color: Colors.red)
                       : const TextStyle(
                           fontFamily: 'Lato', color: Colors.green),
                   focusedBorder: UnderlineInputBorder(
                       borderSide: widget.usernameController.text.length > 3
-                          ? usernameAvailable
+                          ? _usernameAvailable
                               ? const BorderSide(color: Colors.green)
                               : const BorderSide(color: Colors.redAccent)
                           : const BorderSide(color: Colors.redAccent))),
@@ -67,12 +70,13 @@ class _UserNameState extends State<UserName> {
               maxLength: 25,
               onChanged: (val) async {
                 if (val.isEmpty || val.length < 3) {
-                  usernameAvailable = false;
+                  _usernameAvailable = false;
                   return;
                 }
                 val = val.toLowerCase();
 
-                usernameAvailable = await widget.checkUsernameAvailability(val);
+                _usernameAvailable =
+                    await widget.checkUsernameAvailability(val);
                 setState(() {});
               },
               validator: (val) {
@@ -85,7 +89,7 @@ class _UserNameState extends State<UserName> {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                usernameAvailable == true
+                _usernameAvailable == true
                     ? 'This username can not be changed later'
                     : '',
                 style: const TextStyle(
@@ -101,9 +105,9 @@ class _UserNameState extends State<UserName> {
                 size: 60,
               ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                  return const ProfileImage();
-                }));
+                if (_usernameAvailable) {
+                  widget.addUsername(available: _usernameAvailable);
+                }
               },
             )
           ],

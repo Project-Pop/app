@@ -21,7 +21,6 @@ class SignUpHandler extends StatefulWidget {
 class _SignUpHandlerState extends State<SignUpHandler> {
   final _usernameController = TextEditingController();
   final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   UserProvider _userProvider;
@@ -44,7 +43,6 @@ class _SignUpHandlerState extends State<SignUpHandler> {
     final newUser = SignUpModel((b) => b
       ..username = _usernameController.text
       ..fullname = _nameController.text
-      ..email = _emailController.text
       ..dob = dob);
 
     await _userProvider.signUpNewUser(newUser, avatar);
@@ -66,7 +64,6 @@ class _SignUpHandlerState extends State<SignUpHandler> {
     return SignUpPage(
       usernameController: _usernameController,
       nameController: _nameController,
-      emailController: _emailController,
       checkUsernameAvailability: _checkUsernameAvailability,
       formKey: _formKey,
       signUpUser: _signUpUser,

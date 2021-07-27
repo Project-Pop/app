@@ -161,11 +161,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                 const SearchUser(
                                     imgUrl: 'assets/images/profile.png',
                                     name: 'xyz',
-                                    userNAme: 'xuz@gamil'),
+                                    username: 'xuz@gamil'),
                                 const SearchUser(
                                     imgUrl: 'assets/images/profile.png',
                                     name: 'xyz',
-                                    userNAme: 'xuz@gamil')
+                                    username: 'xuz@gamil')
                               ],
                             );
                           }));
@@ -182,11 +182,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                 SearchUser(
                                     imgUrl: 'assets/images/profile.png',
                                     name: 'xyz',
-                                    userNAme: 'xuz@gamil'),
+                                    username: 'xuz@gamil'),
                                 SearchUser(
                                     imgUrl: 'assets/images/profile.png',
                                     name: 'xyz',
-                                    userNAme: 'xuz@gamil')
+                                    username: 'xuz@gamil')
                               ],
                             );
                           }));

@@ -30,10 +30,10 @@ Widget getAppBar(String username, bool isMine) {
           if (isMine)
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                    return SettingsPage(
-                        name: name, userAvatar: profile, userNmae: userName);
-                  }));
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                  //   return SettingsPage(
+                  //       name: name, userAvatar: profile, userNmae: userName);
+                  // }));
                 },
                 icon: const Icon(Icons.settings, color: Colors.white, size: 25))
           else
