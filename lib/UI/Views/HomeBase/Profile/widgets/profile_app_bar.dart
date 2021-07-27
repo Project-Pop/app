@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:app/UI/Views/HomeBase/settings_page/setting.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -26,11 +27,20 @@ Widget getAppBar(String username, bool isMine) {
               ),
             ),
           ),
-          IconButton(
-              onPressed: () {},
-              icon: isMine
-                  ? const Icon(Icons.settings, color: Colors.white, size: 25)
-                  : const Icon(Icons.more_horiz, color: Colors.white, size: 25))
+          if (isMine)
+            IconButton(
+                onPressed: () {
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                  //   return SettingsPage(
+                  //       name: name, userAvatar: profile, userNmae: userName);
+                  // }));
+                },
+                icon: const Icon(Icons.settings, color: Colors.white, size: 25))
+          else
+            IconButton(
+                onPressed: () {},
+                icon:
+                    const Icon(Icons.more_horiz, color: Colors.white, size: 25))
         ]),
       ),
     ),

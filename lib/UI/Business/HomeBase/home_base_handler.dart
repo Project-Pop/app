@@ -11,6 +11,7 @@ import 'package:app/UI/Business/HomeBase/DiscoveryPage/discovery_page_handler.da
 import 'package:app/UI/Business/HomeBase/ProfilePage/profile_page_handler.dart';
 import 'package:app/UI/Views/HomeBase/Widgets/custom_bottom_navigation_bar.dart';
 import 'package:app/UI/Views/HomeBase/home_base.dart';
+import 'package:flutter/services.dart';
 
 class HomeBaseHandler extends StatefulWidget {
   @override
@@ -26,6 +27,27 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
   void _navItemTapped(int index) {
     _logger.d(index);
     _pageController.jumpToPage(index);
+  }
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
   }
 
   @override
