@@ -12,6 +12,7 @@ import 'package:chopper/chopper.dart';
 import 'package:app/Configs/config_reader.dart';
 import 'package:app/Models/index.dart';
 import 'package:app/Services/ApiServices/Interceptors/connectivity_interceptor.dart';
+import 'package:http/http.dart' show MultipartFile;
 import 'Converters/built_value_converter.dart';
 import 'Interceptors/auth_interceptor.dart';
 
@@ -51,8 +52,8 @@ abstract class UserApiService extends ChopperService {
   @Post(path: '/avatar')
   @Multipart()
   Future<Response> uploadUserAvatar({
-    @required @Part() File image,
-    @required @Part() File miniImage,
+    @required @PartFile('image') String imagePath,
+    @required @PartFile('miniImage') String miniImagePath,
   });
 
   @Patch(path: '/')
@@ -75,7 +76,8 @@ abstract class UserApiService extends ChopperService {
   Future<Response<List<ActivityModel>>> getUserActivityList();
 
   @Get(path: '/{username}')
-  Future<Response<UserModel>> getUserData(@Path() String username);
+  Future<Response<UserRelationalModel>> getUserRelationalData(
+      @Path() String username);
 
   @Post(path: '/{username}/follow')
   Future<Response> followUser(@Path() String username);

@@ -41,10 +41,11 @@ class _SignUpPageState extends State<SignUpPage> {
   List<Widget> _signUpPages;
 
   void _addName() {
-    if (widget.nameController.text != null) {
+    if ((widget.nameController.text?.length ?? 0) > 2) {
       _pageController.jumpToPage(1);
     } else {
-      Fluttertoast.showToast(msg: 'Please, Enter Your Name');
+      Fluttertoast.showToast(
+          msg: 'Please, Enter Your Name, atleast 3 characters');
     }
   }
 
