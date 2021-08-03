@@ -2,7 +2,7 @@ import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-Widget settingsAppBar(String title, BuildContext context) {
+Widget customAppBar(String title, BuildContext context) {
   return PreferredSize(
       preferredSize: const Size.fromHeight(55),
       child: SafeArea(

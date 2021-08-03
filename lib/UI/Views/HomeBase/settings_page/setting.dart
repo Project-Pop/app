@@ -4,7 +4,7 @@ import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 import 'package:app/UI/Views/HomeBase/settings_page/show_followers_page.dart';
 import 'package:app/UI/Views/HomeBase/settings_page/show_following_page.dart';
 import 'package:app/UI/Views/HomeBase/settings_page/widgets/setting_items.dart';
-import 'package:app/UI/Views/HomeBase/settings_page/widgets/setting_pages_app_bar.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/setting_pages_app_bar.dart';
 import 'package:app/UI/Views/models/search_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: settingsAppBar('Settings', context),
+        appBar: customAppBar('Settings', context),
         body: Column(
           children: [
             Padding(
