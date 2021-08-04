@@ -7,3 +7,4 @@ export 'reaction_model.dart';
 export 'tagged_user_model.dart';
 export 'user_model.dart';
 export 'user_profile_model.dart';
+export 'user_relational_model.dart';

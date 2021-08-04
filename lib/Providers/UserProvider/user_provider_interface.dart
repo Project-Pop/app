@@ -9,7 +9,7 @@ abstract class UserProviderInterface {
 
   Future signUpNewUser(SignUpModel signUpModel, File avatar);
 
-  // Future uploadUserAvatar(File avatar);
+  Future uploadUserAvatar(File avatar);
 
   // Future editUser();
 
@@ -20,10 +20,13 @@ abstract class UserProviderInterface {
 
   // Future getUserActivities();
 
-  Future<UserModel> getUserDataByUsername(String username);
+  Future<UserRelationalModel> getUserRelationalData(String username);
 
   Future<bool> followUser(String remoteUsername);
   Future<bool> unfollowUser(String remoteUsername);
 
   Future<List<MinimalUserModel>> searchUsers(String searchString);
+
+  // Future getFollowers(String username);
+  // Future getFollowing(String username);
 }
