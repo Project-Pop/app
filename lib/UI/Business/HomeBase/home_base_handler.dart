@@ -35,7 +35,7 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Are you sure?'),
-            content: const Text('Do you want to exit an App'),
+            content: const Text('Do you want to exit?'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),

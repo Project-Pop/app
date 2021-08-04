@@ -22,6 +22,7 @@ part 'api_serializers.g.dart';
   PostReactionModel,
   CommentModel,
   MinimalUserModel,
+  UserRelationalModel,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

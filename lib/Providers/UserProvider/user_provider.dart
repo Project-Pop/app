@@ -50,12 +50,24 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
       Fluttertoast.showToast(msg: 'Profile created successfully 🤗');
 
       // TODO: upload image in background
+      uploadUserAvatar(avatar);
       // Fluttertoast.showToast(msg: "Uploading avatar in background");
 
       notifyListeners();
     } else {
       Fluttertoast.showToast(msg: 'Error in creating profile');
     }
+  }
+
+  @override
+  Future<void> uploadUserAvatar(File avatar) async {
+    if (avatar == null) return;
+    final res = await _userApiService.uploadUserAvatar(
+      imagePath: avatar.path,
+      miniImagePath: avatar.path,
+    );
+
+    _logger.d(res.toString());
   }
 
   @override
@@ -71,8 +83,8 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   }
 
   @override
-  Future<UserModel> getUserDataByUsername(String username) async {
-    final res = await _userApiService.getUserData(username);
+  Future<UserRelationalModel> getUserRelationalData(String username) async {
+    final res = await _userApiService.getUserRelationalData(username);
 
     if (res.isSuccessful) {
       return res.body;

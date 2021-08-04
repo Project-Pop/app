@@ -27,20 +27,54 @@ class _ProfilePageHandlerState extends State<ProfilePageHandler> {
 
   bool _loading = true;
 
+  void _setProfileButtonWidget({bool isMine, bool isFollowing}) {
+    _profileButtonWidget = null;
+    if (isMine == true) {
+      _profileButtonWidget = ProfileButtonWidget(
+        name: 'url/${_userModel.username}', // TODO: provide correct url
+        onTap: () {},
+      );
+    } else if (isFollowing == true) {
+      _profileButtonWidget = ProfileButtonWidget(
+          name: 'Following',
+          onTap: () async {
+            final isSuccessful =
+                await _userProvider.unfollowUser(_userModel.username);
+            if (isSuccessful) {
+              setState(() {
+                _setProfileButtonWidget(isMine: false, isFollowing: false);
+              });
+            }
+          });
+    } else if (isFollowing == false) {
+      _profileButtonWidget = ProfileButtonWidget(
+          name: 'Follow',
+          onTap: () async {
+            final isSuccessful =
+                await _userProvider.followUser(_userModel.username);
+            if (isSuccessful) {
+              setState(() {
+                _setProfileButtonWidget(isMine: false, isFollowing: true);
+              });
+            }
+          });
+    }
+  }
+
   Future<void> initiate() async {
     _userProvider = Provider.of<UserProvider>(context, listen: false);
     _isMine = widget.username == _userProvider.user.username;
 
     if (_isMine) {
       _userModel = _userProvider.user;
-      _profileButtonWidget = ProfileButtonWidget(
-        name: 'url/${_userModel.username}', // TODO: provide correct url
-        onTap: () {},
-      );
+      _setProfileButtonWidget(isMine: true);
     } else {
-      _userModel = await _userProvider.getUserDataByUsername(widget.username);
-      //TODO: make follow/following button
-      _profileButtonWidget = null;
+      final relationalData =
+          await _userProvider.getUserRelationalData(widget.username);
+
+      _userModel = relationalData.user;
+      _setProfileButtonWidget(
+          isMine: false, isFollowing: relationalData.following);
     }
     setState(() {
       _loading = _userModel == null;
