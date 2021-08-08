@@ -8,7 +8,7 @@ import 'package:app/Services/ApiServices/Serializers/api_serializers.dart';
 class BuiltValueConverter extends JsonConverter {
   @override
   Request convertRequest(Request request) {
-    if (request.multipart) {
+    if (request.body == null) {
       // use case when using multipart request
       return request;
     }

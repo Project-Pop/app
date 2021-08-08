@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:app/UI/Views/HomeBase/camera_screen/tag_page.dart';
 import 'package:app/UI/Views/HomeBase/camera_screen/widgets/camera_zoom_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
@@ -9,7 +8,8 @@ import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:path_provider/path_provider.dart';
 
 class OpenCamera extends StatefulWidget {
-  const OpenCamera({Key key}) : super(key: key);
+  const OpenCamera({Key key, this.navigateToTagScreen}) : super(key: key);
+  final Function(List<File> images) navigateToTagScreen;
 
   @override
   _OpenCameraState createState() => _OpenCameraState();
@@ -24,6 +24,8 @@ class _OpenCameraState extends State<OpenCamera> {
   double _progress = 0;
   bool isCameraOrGallary = false;
 
+  bool disableCameraPop = false;
+
   Future<void> initializeControllers() async {
     cameras = await availableCameras();
     controller = CameraController(cameras[0], ResolutionPreset.medium);
@@ -31,6 +33,11 @@ class _OpenCameraState extends State<OpenCamera> {
       if (!mounted) {
         return;
       }
+      controller.addListener(() {
+        setState(() {
+          disableCameraPop = controller.value.isTakingPicture;
+        });
+      });
       setState(() {});
     });
   }
@@ -94,10 +101,10 @@ class _OpenCameraState extends State<OpenCamera> {
                       isCameraOrGallary = false;
                     });
                   },
-                  child: Icon(
+                  child: const Icon(
                     FlutterIcons.cross_ent,
-                    color: Colors.white60,
-                    size: 30,
+                    color: Colors.red,
+                    size: 40,
                   ),
                 ),
               )
@@ -105,18 +112,27 @@ class _OpenCameraState extends State<OpenCamera> {
               Container(),
             Align(
               alignment: Alignment.bottomCenter,
-              child: InkWell(
-                onTap: () {
-                  onTakePictureButtonPressed();
-                  setState(() {
-                    isCameraOrGallary = true;
-                  });
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.green[600],
-                  radius: 30,
-                ),
-              ),
+              child: images.length == 10
+                  ? Container()
+                  : disableCameraPop
+                      ? const CircleAvatar(
+                          radius: 30,
+                          child: CircularProgressIndicator(
+                              // color: Colors.green
+                              ),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            onTakePictureButtonPressed();
+                            setState(() {
+                              isCameraOrGallary = true;
+                            });
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.green[600],
+                            radius: 30,
+                          ),
+                        ),
             ),
             if (isCameraOrGallary)
               Container()
@@ -128,9 +144,9 @@ class _OpenCameraState extends State<OpenCamera> {
                     selectImagesFromGallery();
                   },
                   child: const Icon(
-                    Icons.photo_album,
-                    color: Colors.white60,
-                    size: 30,
+                    FlutterIcons.photo_library_mdi,
+                    color: Colors.yellow,
+                    size: 36,
                   ),
                 ),
               ),
@@ -138,11 +154,13 @@ class _OpenCameraState extends State<OpenCamera> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    widget.navigateToTagScreen(images);
+                  },
                   child: const Icon(
-                    FlutterIcons.check_ant,
-                    color: Colors.white60,
-                    size: 30,
+                    FlutterIcons.check_circle_faw5s,
+                    color: Colors.green,
+                    size: 40,
                   ),
                 ),
               )
@@ -174,7 +192,7 @@ class _OpenCameraState extends State<OpenCamera> {
 
   Widget _flashButton() {
     IconData iconData = Icons.flash_off;
-    Color color = Colors.white60;
+    Color color = Colors.white;
     if (flashMode == FlashMode.alwaysFlash) {
       iconData = Icons.flash_on;
       color = Colors.green;
@@ -213,19 +231,19 @@ class _OpenCameraState extends State<OpenCamera> {
   }
 
   void onTakePictureButtonPressed() {
-    if (images.length < 5) {
+    if (images.length < 10) {
       takePicture().then((File file) {
         if (mounted) {
           setState(() {
             images.add(file);
-            _progress = _progress + 0.2;
+            _progress = _progress + 0.1;
           });
           //if (filePath != null) showInSnackBar('Picture saved to $filePath');
         }
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cant Take More Than 5 Picks')));
+          const SnackBar(content: Text('At max 10 images allowed')));
     }
   }
 
@@ -264,7 +282,7 @@ class _OpenCameraState extends State<OpenCamera> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 5,
+        maxImages: 10,
         selectedAssets: selectedAsset,
         cupertinoOptions: const CupertinoOptions(
           takePhotoIcon: 'chat',
@@ -294,17 +312,15 @@ class _OpenCameraState extends State<OpenCamera> {
           await FlutterAbsolutePath.getAbsolutePath(resultList[i].identifier);
 
       images.add(File(path));
-      _progress = _progress + 0.2;
+      _progress = _progress + 0.1;
     }
 
     setState(() {
       selectedAsset = resultList;
       if (selectedAsset.isNotEmpty) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          _progress = 0;
-          images = [];
-          return const TagScreen();
-        }));
+        widget.navigateToTagScreen([...images]);
+        _progress = 0;
+        images = [];
       }
     });
   }

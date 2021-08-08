@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
-  const CustomVideoPlayer({Key key, this.videoUrl}) : super(key: key);
+  const CustomVideoPlayer({
+    Key key,
+    @required this.videoUrl,
+    this.isFileUrl = false,
+  }) : super(key: key);
 
   final String videoUrl;
+  final bool isFileUrl;
 
   @override
   _CustomVideoPlayerState createState() => _CustomVideoPlayerState();
@@ -15,9 +22,17 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.network(widget.videoUrl)
+
+    if (widget.isFileUrl) {
+      controller = VideoPlayerController.file(File(widget.videoUrl));
+    } else {
+      controller = VideoPlayerController.network(widget.videoUrl);
+    }
+    controller
       ..addListener(() {
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       })
       ..setLooping(true)
       ..initialize().then((value) => controller.play());
@@ -25,8 +40,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   @override
   void dispose() {
-    super.dispose();
     controller.dispose();
+    super.dispose();
   }
 
   @override

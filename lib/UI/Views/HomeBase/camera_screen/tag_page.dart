@@ -6,23 +6,33 @@ import 'package:flutter/material.dart';
 
 class TagScreen extends StatefulWidget {
   const TagScreen(
-      {Key key, this.tagPeopleController, this.tagUsersList, this.searchUsers})
+      {Key key, this.searchUsers, this.thumbnailNotifier, this.uploadPost})
       : super(key: key);
-  final TextEditingController tagPeopleController;
-  final List<SearchUser> tagUsersList;
 
   final Future<List<SearchUser>> Function(String searchString) searchUsers;
+
+  final ValueNotifier<String> thumbnailNotifier;
+
+  final Future<void> Function({
+    @required BuildContext ctx,
+    @required List<String> taggedUsernames,
+    String description,
+  }) uploadPost;
+
   @override
   _TagScreenState createState() => _TagScreenState();
 }
 
 class _TagScreenState extends State<TagScreen> {
-  final url =
-      'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4';
   bool _fetchingSearchResults = false;
-  List<SearchUser> searchResults;
+  List<SearchUser> searchResults = [];
 
-  List tagUSers = [];
+  /// contain usernames of tagged users
+  final List<String> _taggedUsers = [];
+
+  final _tagPeopleController = TextEditingController();
+
+  bool _isPosting = false;
 
   Future<void> searchResult(String value) async {
     setState(() {
@@ -38,10 +48,29 @@ class _TagScreenState extends State<TagScreen> {
     } else {
       tempList = await widget.searchUsers(value);
     }
-    setState(() {
-      searchResults = tempList;
-      _fetchingSearchResults = false;
+
+    // removing already tagged users from search list if they are present in it.
+    tempList.removeWhere((element) {
+      return _taggedUsers
+          .map((e) => element.username == e)
+          .toList()
+          .contains(true);
     });
+
+    if (mounted) {
+      setState(() {
+        searchResults = tempList;
+        _fetchingSearchResults = false;
+      });
+    }
+  }
+
+  void _addToTagList(String username) {
+    _taggedUsers.removeWhere((element) => element == username);
+    _taggedUsers.add(username);
+
+    searchResults.removeWhere((element) => element.username == username);
+    setState(() {});
   }
 
   @override
@@ -49,85 +78,110 @@ class _TagScreenState extends State<TagScreen> {
     return Scaffold(
       appBar: customAppBar('Who did you pop?', context),
       body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  height: 70,
-                  width: 120,
-                  child: CustomVideoPlayer(
-                    videoUrl: url,
-                  ),
-                ),
-                const MyText(
-                  msg: 'Tag:',
-                  maxLines: 1,
-                  textStyle: TextStyle(color: Colors.white60),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                    child: TextField(
-                  style: const TextStyle(color: Colors.white60),
-                  onChanged: (val) {
-                    searchResult(val);
-                  },
-                  controller: widget.tagPeopleController,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                ))
-              ],
-            ),
-            if (tagUSers.isNotEmpty)
-              Row(
-                children: [showTagUser()],
+        child: _isPosting
+            ? const Center(
+                child: CircularProgressIndicator(),
               )
-            else
-              Container(),
-            if (_fetchingSearchResults)
-              const Center(child: CircularProgressIndicator())
-            else
-              const Padding(
-                padding: EdgeInsets.all(22.0),
-                child: TagUsersListLAyout(
-                  tagUserList: [
-                    SearchUser(
-                        imgUrl: 'assets/images/profile.png',
-                        name: 'xyz',
-                        username: 'xyz@gmail'),
-                    SearchUser(
-                        imgUrl: 'assets/images/profile.png',
-                        name: 'xyz',
-                        username: 'xyz@gmail')
-                  ],
-                ),
-              )
-          ],
-        ),
+            : Column(
+                children: [
+                  Row(
+                    children: [
+                      ValueListenableBuilder<String>(
+                          valueListenable: widget.thumbnailNotifier,
+                          builder: (context, url, child) {
+                            return SizedBox(
+                              height: 160,
+                              width: 160,
+                              child: url?.isNotEmpty == true
+                                  ? CustomVideoPlayer(
+                                      isFileUrl: true,
+                                      videoUrl: url,
+                                    )
+                                  : Container(),
+                            );
+                          }),
+                      const SizedBox(width: 8),
+                      const MyText(
+                        msg: 'Tag:',
+                        maxLines: 1,
+                        textStyle: TextStyle(color: Colors.white60),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                          child: TextField(
+                        style: const TextStyle(color: Colors.white60),
+                        onChanged: (val) {
+                          searchResult(val);
+                        },
+                        controller: _tagPeopleController,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ))
+                    ],
+                  ),
+                  if (_taggedUsers.isNotEmpty)
+                    Row(children: showTagUser())
+                  else
+                    Container(),
+                  if (_fetchingSearchResults)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    Padding(
+                      padding: const EdgeInsets.all(22.0),
+                      child: TagUsersListLAyout(
+                        tagUserList: searchResults,
+                        addToTagList: _addToTagList,
+                      ),
+                    ),
+                  if (!_fetchingSearchResults && _taggedUsers.isNotEmpty)
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _isPosting = true;
+                        });
+                        widget
+                            .uploadPost(
+                          ctx: context,
+                          taggedUsernames: _taggedUsers,
+                          description: '',
+                        )
+                            .then((_) {
+                          if (!mounted) return;
+                          setState(() {
+                            _isPosting = false;
+                          });
+                        });
+                      },
+                      child: const Text('Post'),
+                    ),
+                ],
+              ),
       ),
     );
   }
 
-  showTagUser() {
-    int i;
-    for (i = 0; i < tagUSers.length; i++) {
-      return Text(
-        tagUSers[i],
-        style: const TextStyle(color: Colors.white),
-      );
-    }
+  List<Widget> showTagUser() {
+    return _taggedUsers
+        .map(
+          (username) => Text(
+            username,
+            style: const TextStyle(color: Colors.white),
+          ),
+        )
+        .toList();
   }
 }
 
 class TagUsersListLAyout extends StatefulWidget {
-  const TagUsersListLAyout({Key key, this.tagUserList, this.taggedUser})
-      : super(key: key);
+  const TagUsersListLAyout({
+    Key key,
+    this.tagUserList,
+    this.addToTagList,
+  }) : super(key: key);
   final List<SearchUser> tagUserList;
-  final List taggedUser;
+  final Function(String username) addToTagList;
   @override
   _TagUsersListLAyoutState createState() => _TagUsersListLAyoutState();
 }
@@ -135,7 +189,7 @@ class TagUsersListLAyout extends StatefulWidget {
 class _TagUsersListLAyoutState extends State<TagUsersListLAyout> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: widget.tagUserList.length,
@@ -145,7 +199,7 @@ class _TagUsersListLAyoutState extends State<TagUsersListLAyout> {
               padding: const EdgeInsets.only(top: 12.0, left: 18),
               child: GestureDetector(
                 onTap: () {
-                  widget.taggedUser.add(widget.tagUserList[index].username);
+                  widget.addToTagList(user.username);
                   setState(() {});
                 },
                 child: Row(

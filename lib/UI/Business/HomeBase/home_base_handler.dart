@@ -14,6 +14,8 @@ import 'package:app/UI/Views/HomeBase/Widgets/custom_bottom_navigation_bar.dart'
 import 'package:app/UI/Views/HomeBase/home_base.dart';
 import 'package:flutter/services.dart';
 
+import 'CameraPage/camera_page_handler.dart';
+
 class HomeBaseHandler extends StatefulWidget {
   @override
   _HomeBaseHandlerState createState() => _HomeBaseHandlerState();
@@ -64,7 +66,7 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
       pages: [
         Container(),
         DiscoveryPageHandler(),
-        const OpenCamera(),
+        CameraPageHandler(),
         Container(),
         ProfilePageHandler(_userProvider.user.username),
       ],
