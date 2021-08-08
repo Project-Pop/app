@@ -44,7 +44,7 @@ abstract class UserApiService extends ChopperService {
   Future<Response<UserModel>> getMyProfile();
 
   @Post(path: '/')
-  Future<Response<UserModel>> signUpNewUser(
+  Future<Response<UserRelationalModel>> signUpNewUser(
     @Body() SignUpModel signUpModel,
   );
 

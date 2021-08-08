@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 
@@ -46,7 +43,7 @@ abstract class PostApiService extends ChopperService {
 
   @Post(path: '/')
   @Multipart()
-  Future<Response<NewPostModel>> createPost({
+  Future<Response<PostModel>> createPost({
     @required @Part('post') String newPostModelJSON,
     @required @PartFile('hdVideo') String hdVideoPath,
     @required @PartFile('thumbVideo') String thumbVideoPath,

@@ -46,7 +46,7 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   Future<void> signUpNewUser(SignUpModel signUpModel, File avatar) async {
     final res = await _userApiService.signUpNewUser(signUpModel);
     if (res.isSuccessful) {
-      _userModel = res.body;
+      _userModel = res.body.user;
       Fluttertoast.showToast(msg: 'Profile created successfully 🤗');
 
       // TODO: upload image in background
