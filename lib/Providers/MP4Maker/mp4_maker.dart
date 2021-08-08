@@ -12,7 +12,7 @@ class MP4Maker {
   MP4Maker({
     @required this.inputImages,
     this.onThumbnailReady,
-  })  : _tempFolder = DateTime.now().toIso8601String(),
+  })  : _tempFolder = DateTime.now().millisecondsSinceEpoch.toString(),
         assert(inputImages != null && inputImages.isNotEmpty,
             'input image list can not be empty or null') {
     _init();

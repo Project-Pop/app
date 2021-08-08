@@ -14,7 +14,7 @@ abstract class ActivityModel
   ActivityModel._();
 
   NotificationType get notificationType;
-  DateTime get timestamp;
+  String get timestamp;
   String get title;
   String get primaryMediaUrl;
 
