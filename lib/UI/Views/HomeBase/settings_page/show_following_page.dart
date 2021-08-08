@@ -1,5 +1,5 @@
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-import 'package:app/UI/Views/HomeBase/settings_page/widgets/setting_pages_app_bar.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/setting_pages_app_bar.dart';
 import 'package:app/UI/Views/models/search_user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class ShowFollowing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: settingsAppBar('Following', context),
+      appBar: customAppBar('Following', context),
       body: ListView.builder(
           itemCount: followingList.length,
           itemBuilder: (context, index) {

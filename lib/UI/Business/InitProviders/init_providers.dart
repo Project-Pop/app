@@ -22,6 +22,9 @@ class InitProviders extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => UserProvider(context: context),
         ),
+        ChangeNotifierProvider(
+          create: (context) => PostProvider(context: context),
+        ),
       ],
       child: child,
     );

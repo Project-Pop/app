@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -40,9 +41,12 @@ class TestWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: CustomTheme.darkTheme,
-      home: Container(),
-    );
+        title: 'Flutter Demo',
+        theme: CustomTheme.darkTheme,
+        home:
+            /*ChangeNotifierProvider(
+            create: (_) => UserProvider(context: context),
+            child: DiscoveryPageHandler())*/
+            OpenCamera());
   }
 }

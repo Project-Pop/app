@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -12,6 +13,8 @@ import 'package:app/UI/Business/HomeBase/ProfilePage/profile_page_handler.dart';
 import 'package:app/UI/Views/HomeBase/Widgets/custom_bottom_navigation_bar.dart';
 import 'package:app/UI/Views/HomeBase/home_base.dart';
 import 'package:flutter/services.dart';
+
+import 'CameraPage/camera_page_handler.dart';
 
 class HomeBaseHandler extends StatefulWidget {
   @override
@@ -63,7 +66,7 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
       pages: [
         Container(),
         DiscoveryPageHandler(),
-        Container(),
+        CameraPageHandler(),
         Container(),
         ProfilePageHandler(_userProvider.user.username),
       ],

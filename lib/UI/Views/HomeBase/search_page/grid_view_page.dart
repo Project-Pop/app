@@ -89,7 +89,8 @@ class _SearchPageGridViewState extends State<SearchPageGridView> {
                 crossAxisCount: 3,
                 itemCount: widget.popList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return cardPop();
+                  return videoPop(index,
+                      'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4');
                 },
                 staggeredTileBuilder: (int index) =>
                     const StaggeredTile.count(1, 1),

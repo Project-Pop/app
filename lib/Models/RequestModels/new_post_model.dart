@@ -1,6 +1,10 @@
 // Package imports:
+import 'dart:convert';
+
+import 'package:app/Services/ApiServices/Serializers/api_serializers.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:built_collection/built_collection.dart';
 
 // Project imports:
 import 'package:app/Models/RequestModels/username_model.dart';
@@ -16,7 +20,17 @@ abstract class NewPostModel
   // fields go here
 
   String get description;
-  List<UsernameModel> get taggedUsers;
+  BuiltList<UsernameModel> get taggedUsers;
+
+  String toJson() {
+    return json
+        .encode(serializers.serializeWith(NewPostModel.serializer, this));
+  }
+
+  static NewPostModel fromJson(String jsonString) {
+    return serializers.deserializeWith(
+        NewPostModel.serializer, json.decode(jsonString));
+  }
 
   static Serializer<NewPostModel> get serializer => _$newPostModelSerializer;
 }

@@ -12,7 +12,6 @@ import 'package:chopper/chopper.dart';
 import 'package:app/Configs/config_reader.dart';
 import 'package:app/Models/index.dart';
 import 'package:app/Services/ApiServices/Interceptors/connectivity_interceptor.dart';
-import 'package:http/http.dart' show MultipartFile;
 import 'Converters/built_value_converter.dart';
 import 'Interceptors/auth_interceptor.dart';
 

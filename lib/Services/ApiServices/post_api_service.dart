@@ -47,9 +47,9 @@ abstract class PostApiService extends ChopperService {
   @Post(path: '/')
   @Multipart()
   Future<Response<NewPostModel>> createPost({
-    @required @Body() NewPostModel newPostModel,
-    @required @Part() File image,
-    @required @Part() File miniImage,
+    @required @Part('post') String newPostModelJSON,
+    @required @PartFile('hdVideo') String hdVideoPath,
+    @required @PartFile('thumbVideo') String thumbVideoPath,
   });
 
   @Get(path: '/home')
