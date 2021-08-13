@@ -1,5 +1,10 @@
 // Flutter imports:
-import 'package:app/UI/Views/HomeBase/Widgets/custom_video_player.dart';
+import 'dart:io';
+
+import 'package:app/UI/Views/HomeBase/Widgets/custom_image_provider.dart';
+import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_post_details_page.dart';
+import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_vew_shimmer.dart';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -7,28 +12,72 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 // Project imports:
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-import 'package:video_player/video_player.dart';
 
-Widget cardPop() {
-  return Container(
-    decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage(
-              'assets/images/profile.png',
-            ),
-            fit: BoxFit.fill)),
-  );
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+import 'package:path_provider/path_provider.dart';
+
+String gridUrl =
+    'https://images.all-free-download.com/footage_preview/webm/horse_riding_205.webm';
+
+//class for profile page pops
+class CardPop extends StatefulWidget {
+  const CardPop({Key key, this.vidUrl}) : super(key: key);
+
+  final String vidUrl;
+
+  @override
+  _CardPopState createState() => _CardPopState();
 }
 
-Widget videoPop(int index, String vid) {
-  
-  return Container(
-    child: CustomVideoPlayer(
-      videoUrl: vid,
-     
-    ),
-  );
+class _CardPopState extends State<CardPop> {
+  String outputPath;
+  String dirPath;
+  Future<void> createPath() async {
+    await convertGif();
+  }
+
+  @override
+  void initState() {
+    createPath();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final dir = Directory(dirPath);
+    dir.deleteSync(recursive: true);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return outputPath != null
+        ? SizedBox(
+            child: CustomImageProvider(
+            imgUrl: outputPath,
+          ))
+        : const GridViewShimmer();
+  }
+
+  Future<void> convertGif() async {
+    String timestamp() => DateTime.now().microsecondsSinceEpoch.toString();
+    final Directory extDir = await getTemporaryDirectory();
+    dirPath = '${extDir.path}/video';
+    await Directory(dirPath).create(recursive: true);
+    final String rawDocumentPath = dirPath;
+
+    outputPath = '$rawDocumentPath/output${timestamp()}.gif';
+
+    final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+    final arguments = ['-i', gridUrl, outputPath];
+    _flutterFFmpeg.executeWithArguments(arguments).then((rc) {
+      setState(() {});
+    });
+  }
 }
+
+// class for grid view search page
 
 Widget addPhotoWidget() {
   return Container(
@@ -70,7 +119,7 @@ class DyamicGridView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return isMinePop == false && index == 0
               ? addPhotoWidget()
-              : cardPop();
+              : const CardPop();
         },
         staggeredTileBuilder: (int index) => const StaggeredTile.count(1, 1),
         mainAxisSpacing: 4.0,
@@ -79,5 +128,3 @@ class DyamicGridView extends StatelessWidget {
     );
   }
 }
-
-// class for camera tab

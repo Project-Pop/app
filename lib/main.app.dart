@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'App',
         theme: CustomTheme.darkTheme,
-        home: AuthHandler(),
+        home: DiscoveryPageHandler(),
       ),
     );
   }
@@ -49,10 +49,9 @@ class TestWidgets extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: CustomTheme.darkTheme,
-        home:
-            /*ChangeNotifierProvider(
+        home: ChangeNotifierProvider(
             create: (_) => UserProvider(context: context),
-            child: DiscoveryPageHandler())*/
-            OpenCamera());
+            child: DiscoveryPageHandler()));
+    //OpenCamera());
   }
 }

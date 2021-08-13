@@ -21,7 +21,9 @@ class DyamicGridViewForCameraPops extends StatelessWidget {
         crossAxisCount: 3,
         itemCount: isMinePop ? popList.length + 1 : popList.length,
         itemBuilder: (BuildContext context, int index) {
-          return isMinePop == true && index == 0 ? addPhotoWidget() : cardPop();
+          return isMinePop == true && index == 0
+              ? addPhotoWidget()
+              : const CardPop();
         },
         staggeredTileBuilder: (int index) => const StaggeredTile.count(1, 1),
         mainAxisSpacing: 4.0,

@@ -1,14 +1,21 @@
 // Flutter imports:
+import 'dart:io';
+
+import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_list.dart';
+
+import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_vew_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 // Package imports:
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 // Project imports:
-import 'package:app/UI/Views/HomeBase/Profile/widgets/pop_view_grid_widget.dart';
+
 import 'package:app/UI/Views/HomeBase/search_page/search_page.dart';
 import 'package:app/UI/Views/Theme/constants/colors.dart';
 import 'package:app/UI/Views/models/search_user_model.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SearchPageGridView extends StatefulWidget {
   const SearchPageGridView({
@@ -27,6 +34,8 @@ class SearchPageGridView extends StatefulWidget {
 }
 
 class _SearchPageGridViewState extends State<SearchPageGridView> {
+  String dirPath;
+  List<String> storedConvertedGifs = [];
   void _navigateToSearchPage() {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return SearchPage(
@@ -36,6 +45,32 @@ class _SearchPageGridViewState extends State<SearchPageGridView> {
         onTappingProfile: widget.onTappingProfile,
       );
     }));
+  }
+
+  Future<void> convertGif() async {
+    for (var i = 0; i < widget.popList.length; i++) {
+      String timestamp() => DateTime.now().microsecondsSinceEpoch.toString();
+      final Directory extDir = await getTemporaryDirectory();
+      dirPath = extDir.path;
+
+      final String rawDocumentPath = dirPath;
+
+      final String outputPath = '$rawDocumentPath/output${timestamp()}.gif';
+
+      final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+      final arguments = ['-i', widget.popList[i], outputPath];
+      _flutterFFmpeg.executeWithArguments(arguments).then((rc) {
+        setState(() {});
+      });
+      storedConvertedGifs.add(outputPath);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsFlutterBinding.ensureInitialized();
+    convertGif();
   }
 
   @override
@@ -86,18 +121,21 @@ class _SearchPageGridViewState extends State<SearchPageGridView> {
               height: MediaQuery.of(context).size.height - 180,
               child: StaggeredGridView.countBuilder(
                 //shrinkWrap: true,
-                crossAxisCount: 3,
+                crossAxisCount: 4,
                 itemCount: widget.popList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return videoPop(index,
-                      'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4');
+                  return storedConvertedGifs.isEmpty
+                      ? GridViewShimmer()
+                      : GridPopCard(
+                          gifUrl: storedConvertedGifs[index],
+                          vidUrl: widget.popList[index]);
                 },
                 staggeredTileBuilder: (int index) =>
-                    const StaggeredTile.count(1, 1),
+                    StaggeredTile.count(2, index % 4 == 0 ? 1.8 : 0.9),
                 mainAxisSpacing: 4.0,
                 crossAxisSpacing: 4.0,
               ),
-            ),
+            )
           ],
         ),
       ),

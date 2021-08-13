@@ -111,6 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
     } else {
       return Center(
         child: Column(
+          // ignore: prefer_const_literals_to_create_immutables
           children: [
             const SizedBox(
               height: 80,
