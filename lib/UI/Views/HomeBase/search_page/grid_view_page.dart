@@ -5,11 +5,12 @@ import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_list.dart';
 
 import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_vew_shimmer.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 // Package imports:
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
+import 'package:uuid/uuid.dart';
 // Project imports:
 
 import 'package:app/UI/Views/HomeBase/search_page/search_page.dart';
@@ -35,6 +36,7 @@ class SearchPageGridView extends StatefulWidget {
 
 class _SearchPageGridViewState extends State<SearchPageGridView> {
   String dirPath;
+
   List<String> storedConvertedGifs = [];
   void _navigateToSearchPage() {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
@@ -48,20 +50,24 @@ class _SearchPageGridViewState extends State<SearchPageGridView> {
   }
 
   Future<void> convertGif() async {
+    var uuid = Uuid();
+    String timestamp() =>
+        DateTime.now().microsecondsSinceEpoch.toString() + uuid.v4().toString();
+    final Directory extDir = await getTemporaryDirectory();
+    dirPath = extDir.path;
+
+    final String rawDocumentPath = dirPath;
+
     for (var i = 0; i < widget.popList.length; i++) {
-      String timestamp() => DateTime.now().microsecondsSinceEpoch.toString();
-      final Directory extDir = await getTemporaryDirectory();
-      dirPath = extDir.path;
-
-      final String rawDocumentPath = dirPath;
-
       final String outputPath = '$rawDocumentPath/output${timestamp()}.gif';
-
       final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
       final arguments = ['-i', widget.popList[i], outputPath];
-      _flutterFFmpeg.executeWithArguments(arguments).then((rc) {
+     await  _flutterFFmpeg.executeWithArguments(arguments).whenComplete(() {
+        print('done');
+
         setState(() {});
       });
+
       storedConvertedGifs.add(outputPath);
     }
   }
@@ -124,8 +130,8 @@ class _SearchPageGridViewState extends State<SearchPageGridView> {
                 crossAxisCount: 4,
                 itemCount: widget.popList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return storedConvertedGifs.isEmpty
-                      ? GridViewShimmer()
+                  return storedConvertedGifs.length != widget.popList.length
+                      ? const GridViewShimmer()
                       : GridPopCard(
                           gifUrl: storedConvertedGifs[index],
                           vidUrl: widget.popList[index]);

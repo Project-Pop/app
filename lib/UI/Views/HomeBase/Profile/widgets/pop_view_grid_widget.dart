@@ -2,7 +2,8 @@
 import 'dart:io';
 
 import 'package:app/UI/Views/HomeBase/Widgets/custom_image_provider.dart';
-import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_post_details_page.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/grid_post_details_page.dart';
+
 import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_vew_shimmer.dart';
 
 import 'package:flutter/material.dart';
@@ -15,69 +16,32 @@ import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:path_provider/path_provider.dart';
-
-String gridUrl =
-    'https://images.all-free-download.com/footage_preview/webm/horse_riding_205.webm';
+import 'package:uuid/uuid.dart';
 
 //class for profile page pops
-class CardPop extends StatefulWidget {
-  const CardPop({Key key, this.vidUrl}) : super(key: key);
+class CardPop extends StatelessWidget {
+  const CardPop({Key key, this.vidUrl, this.gifUrl}) : super(key: key);
 
   final String vidUrl;
-
-  @override
-  _CardPopState createState() => _CardPopState();
-}
-
-class _CardPopState extends State<CardPop> {
-  String outputPath;
-  String dirPath;
-  Future<void> createPath() async {
-    await convertGif();
-  }
-
-  @override
-  void initState() {
-    createPath();
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    final dir = Directory(dirPath);
-    dir.deleteSync(recursive: true);
-    super.dispose();
-  }
+  final String gifUrl;
 
   @override
   Widget build(BuildContext context) {
-    return outputPath != null
-        ? SizedBox(
-            child: CustomImageProvider(
-            imgUrl: outputPath,
-          ))
-        : const GridViewShimmer();
-  }
-
-  Future<void> convertGif() async {
-    String timestamp() => DateTime.now().microsecondsSinceEpoch.toString();
-    final Directory extDir = await getTemporaryDirectory();
-    dirPath = '${extDir.path}/video';
-    await Directory(dirPath).create(recursive: true);
-    final String rawDocumentPath = dirPath;
-
-    outputPath = '$rawDocumentPath/output${timestamp()}.gif';
-
-    final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
-    final arguments = ['-i', gridUrl, outputPath];
-    _flutterFFmpeg.executeWithArguments(arguments).then((rc) {
-      setState(() {});
-    });
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return GridPostDetails(
+            vidUrl: vidUrl,
+          );
+        }));
+      },
+      child: SizedBox(
+          child: CustomImageProvider(
+        imgUrl: gifUrl,
+      )),
+    );
   }
 }
-
-// class for grid view search page
 
 Widget addPhotoWidget() {
   return Container(
@@ -102,11 +66,50 @@ Widget addPhotoWidget() {
 }
 
 //class for pop tag
-class DyamicGridView extends StatelessWidget {
-  const DyamicGridView({Key key, this.popList, this.isMinePop})
+class DyamicGridView extends StatefulWidget {
+  const DyamicGridView({Key key, this.popList, this.isMinePop, this.isHome})
       : super(key: key);
-  final List popList;
+  final List<String> popList;
   final bool isMinePop;
+  final bool isHome;
+
+  @override
+  _DyamicGridViewState createState() => _DyamicGridViewState();
+}
+
+class _DyamicGridViewState extends State<DyamicGridView> {
+  String dirPath;
+  List<String> storedConvertedGifs = [];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsFlutterBinding.ensureInitialized();
+    convertGif();
+  }
+
+  Future<void> convertGif() async {
+    var uuid = Uuid();
+    String timestamp() =>
+        DateTime.now().millisecondsSinceEpoch.toString() + uuid.v4().toString();
+    final Directory extDir = await getTemporaryDirectory();
+    dirPath = extDir.path;
+
+    final String rawDocumentPath = dirPath;
+
+    for (var i = 0; i < widget.popList.length; i++) {
+      final String outputPath = '$rawDocumentPath/output${timestamp()}.gif';
+      final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+      final arguments = ['-i', widget.popList[i], outputPath];
+      await _flutterFFmpeg.executeWithArguments(arguments).whenComplete(() {
+        print('done');
+
+        setState(() {});
+      });
+
+      storedConvertedGifs.add(outputPath);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -115,11 +118,19 @@ class DyamicGridView extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         //shrinkWrap: true,
         crossAxisCount: 3,
-        itemCount: isMinePop ? popList.length + 1 : popList.length,
+        itemCount: widget.isHome
+            ? widget.popList.length
+            : widget.isMinePop
+                ? widget.popList.length + 1
+                : widget.popList.length,
         itemBuilder: (BuildContext context, int index) {
-          return isMinePop == false && index == 0
+          return widget.isMinePop == false && index == 0
               ? addPhotoWidget()
-              : const CardPop();
+              : storedConvertedGifs.length != widget.popList.length
+                  ? const GridViewShimmer()
+                  : CardPop(
+                      gifUrl: storedConvertedGifs[index],
+                      vidUrl: widget.popList[index]);
         },
         staggeredTileBuilder: (int index) => const StaggeredTile.count(1, 1),
         mainAxisSpacing: 4.0,

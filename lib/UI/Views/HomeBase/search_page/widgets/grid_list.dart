@@ -1,5 +1,5 @@
 import 'package:app/UI/Views/HomeBase/Widgets/custom_image_provider.dart';
-import 'package:app/UI/Views/HomeBase/search_page/widgets/grid_post_details_page.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/grid_post_details_page.dart';
 import 'package:flutter/material.dart';
 
 class GridPopCard extends StatelessWidget {

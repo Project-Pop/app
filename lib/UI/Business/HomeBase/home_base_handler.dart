@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
+import 'package:app/UI/Views/HomeBase/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -62,7 +63,7 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
     return HomeBase(
       controller: _pageController,
       pages: [
-        Container(),
+        const HomePage(),
         DiscoveryPageHandler(),
         const OpenCamera(),
         Container(),

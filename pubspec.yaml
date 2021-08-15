@@ -18,64 +18,37 @@ environment:
   sdk: ">=2.11.0 <3.0.0"
 
 dependencies:
-  flutter_icons: ^1.1.0
   amazon_cognito_identity_dart_2: ^0.1.25+4
-
+  auto_size_text: ^2.1.0
   built_value: ^7.1.0
-
-  connectivity: ^3.0.6
-
-  country_code_picker: ^2.0.2
-
+  cached_network_image: null
   chopper: ^3.0.6
-
+  connectivity: ^3.0.6
+  country_code_picker: ^2.0.2
   cupertino_icons: ^1.0.2
-
-  image_cropper: ^1.4.1
-
-  image_picker: ^0.8.2
-
-  intl: ^0.17.0
-
-  logger: ^1.0.0
-
-  provider: ^5.0.0
-
+  flick_video_player: ^0.3.1
   flutter:
     sdk: flutter
-
-  flutter_secure_storage: ^4.2.0
-
-  fluttertoast: ^8.0.7
-
-  flutter_phoenix: ^1.0.0
-
-  sms_autofill: ^2.0.0
-
-  yaml: ^3.1.0
-
-  flutter_staggered_grid_view: ^0.4.0
-
-  auto_size_text: ^2.1.0
-
-  flutter_better_camera:
-
-  multi_image_picker2: ^5.0.2
-
-  path_provider:
-
   flutter_absolute_path: ^1.0.6
-
-  video_player: ^2.1.12
-
-  flick_video_player: ^0.3.1
-
-  cached_network_image: 
-
+  flutter_better_camera: null
   flutter_ffmpeg: ^0.4.2
-
+  flutter_icons: ^1.1.0
+  flutter_phoenix: ^1.0.0
+  flutter_secure_storage: ^4.2.0
+  flutter_staggered_grid_view: ^0.4.0
+  fluttertoast: ^8.0.7
+  image_cropper: ^1.4.1
+  image_picker: ^0.8.2
+  intl: ^0.17.0
+  logger: ^1.0.0
+  multi_image_picker2: ^5.0.2
+  path_provider: null
+  provider: ^5.0.0
   shimmer: ^2.0.0
-
+  sms_autofill: ^2.0.0
+  uuid: 
+  video_player: ^2.1.12
+  yaml: ^3.1.0
 
 dev_dependencies:
   build_runner: ^1.10.11
