@@ -16,7 +16,7 @@ class ConnectivityInterceptor implements RequestInterceptor {
     if (connectivityResult == false) {
       Fluttertoast.showToast(
           msg: 'Could not connect to internet, please check your connection.');
-      return null;
+      return const Request('GET', 'https://www.google.com', '');
     }
     return req;
   }

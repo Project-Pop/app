@@ -16,16 +16,18 @@ class DiscoveryPageHandler extends StatefulWidget {
 }
 
 class _DiscoveryPageHandlerState extends State<DiscoveryPageHandler> {
-  UserProvider _userProvider;
+  UserProvider? _userProvider;
 
   Future<List<SearchUser>> _searchUsers(String searchString) async {
-    final list = await _userProvider.searchUsers(searchString);
+    final list = (await _userProvider?.searchUsers(searchString)) ?? [];
     return list
-        .map((e) => SearchUser(
-              imgUrl: e.imageUrl ?? 'assets/images/profile.png',
-              name: e.fullname,
-              username: e.username,
-            ))
+        .map(
+          (e) => SearchUser(
+            imgUrl: e.imageUrl ?? 'assets/images/profile.png',
+            name: e.fullname,
+            username: e.username,
+          ),
+        )
         .toList();
   }
 

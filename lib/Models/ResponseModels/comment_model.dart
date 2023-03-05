@@ -12,8 +12,8 @@ abstract class CommentModel
 
   String get commentId;
   String get username;
-  @nullable
-  int get likeCount;
+
+  int? get likeCount;
 
   String get message;
 

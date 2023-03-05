@@ -1,12 +1,14 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 import 'package:app/UI/Views/SignUp/widgets/custom_button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class TakeName extends StatelessWidget {
   const TakeName({
-    @required this.nameController,
-    @required this.addName,
+    required this.nameController,
+    required this.addName,
   });
   final TextEditingController nameController;
   final Function() addName;
@@ -42,8 +44,8 @@ class TakeName extends StatelessWidget {
                     ),
                   ),
                   validator: (val) {
-                    if (val.isEmpty) return 'Please fill this field';
-                    if (val.length < 3) {
+                    if ((val ?? '').isEmpty) return 'Please fill this field';
+                    if ((val ?? '').length < 3) {
                       return 'Minimum length should be 3';
                     }
 
@@ -57,7 +59,7 @@ class TakeName extends StatelessWidget {
           const SizedBox(height: 50),
           CustomButtons(
             icon: const Icon(
-              FlutterIcons.arrow_alt_circle_right_faw5,
+              Icons.arrow_right,
               size: 60,
             ),
             onTap: () {

@@ -23,15 +23,15 @@ class _SignUpHandlerState extends State<SignUpHandler> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  UserProvider _userProvider;
-  AuthProvider _authProvider;
+  UserProvider? _userProvider;
+  AuthProvider? _authProvider;
 
   Future<bool> _checkUsernameAvailability(String username) {
-    return _userProvider.isUsernameAvailable(username);
+    return (_userProvider?.isUsernameAvailable(username))!;
   }
 
-  Future<void> _signUpUser({DateTime dob, File avatar}) async {
-    if (_formKey.currentState.validate() == false) return;
+  Future<void> _signUpUser({required DateTime dob, File? avatar}) async {
+    if (_formKey.currentState?.validate() != true) return;
 
     // TODO: validate all the controllers.
 
@@ -45,11 +45,11 @@ class _SignUpHandlerState extends State<SignUpHandler> {
       ..fullname = _nameController.text
       ..dob = dob);
 
-    await _userProvider.signUpNewUser(newUser, avatar);
+    await _userProvider?.signUpNewUser(newUser, avatar);
   }
 
   Future<void> _logout() async {
-    await _authProvider.logOut(context);
+    await _authProvider?.logOut(context);
   }
 
   @override

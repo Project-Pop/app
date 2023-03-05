@@ -16,8 +16,7 @@ abstract class UserProfileModel
   int get followers;
   int get following;
 
-  @nullable
-  String get bio;
+  String? get bio;
 
   static Serializer<UserProfileModel> get serializer =>
       _$userProfileModelSerializer;

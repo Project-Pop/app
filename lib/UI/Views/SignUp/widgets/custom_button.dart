@@ -1,24 +1,25 @@
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+
 class CustomButtons extends StatelessWidget {
-  const CustomButtons({Key key, this.icon, this.onTap}) : super(key: key);
+  const CustomButtons({Key? key, required this.icon, this.onTap})
+      : super(key: key);
   final Icon icon;
-  final Function() onTap;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return InkWell(
       onTap: onTap,
       child: SizedBox(
-        child: Container(
-           
-            child: IconButton(
-              onPressed: onTap,
-              icon: icon,
-              color: Colors.green,
-            )),
+        child: IconButton(
+          onPressed: onTap,
+          icon: icon,
+          color: Colors.green,
+        ),
       ),
     );
   }

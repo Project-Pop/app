@@ -13,10 +13,10 @@ import 'package:app/UI/Views/models/search_user_model.dart';
 class SearchPageGridView extends StatefulWidget {
   const SearchPageGridView({
     Key key,
-    @required this.popList,
-    @required this.recentSearches,
-    @required this.searchUsers,
-    @required this.onTappingProfile,
+    required this.popList,
+    required this.recentSearches,
+    required this.searchUsers,
+    required this.onTappingProfile,
   }) : super(key: key);
   final List popList;
   final List<SearchUser> recentSearches;

@@ -13,11 +13,9 @@ abstract class SignUpModel implements Built<SignUpModel, SignUpModelBuilder> {
   String get username;
   String get fullname;
 
-  @nullable
-  String get email;
+  String? get email;
 
-  @nullable
-  DateTime get dob;
+  DateTime? get dob;
 
   static Serializer<SignUpModel> get serializer => _$signUpModelSerializer;
 }

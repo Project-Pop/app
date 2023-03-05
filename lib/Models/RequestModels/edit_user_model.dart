@@ -10,12 +10,9 @@ abstract class EditUserModel
       _$EditUserModel;
   EditUserModel._();
 
-  @nullable
-  String get fullname;
-  @nullable
-  String get email;
-  @nullable
-  DateTime get dob;
+  String? get fullname;
+  String? get email;
+  DateTime? get dob;
 
   static Serializer<EditUserModel> get serializer => _$editUserModelSerializer;
 }

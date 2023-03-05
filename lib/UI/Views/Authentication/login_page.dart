@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:app/Configs/custom_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,14 +7,17 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
+// Project imports:
+import 'package:app/Configs/custom_logger.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({
-    @required this.sendOtp,
+    required this.sendOtp,
   }) : assert(sendOtp != null);
 
   final Function({
-    @required String dialCode,
-    @required String phoneNumber,
+    required String dialCode,
+    required String phoneNumber,
   }) sendOtp;
 
   @override
@@ -25,7 +27,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _dialCode;
+  String _dialCode = '';
 
   final _logger = CustomLogger.logger(LoginPage);
 
@@ -102,13 +104,13 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     CountryCodePicker(
                       showDropDownButton: true,
-                      onInit: (CountryCode countryCode) {
-                        _dialCode = countryCode.dialCode;
+                      onInit: (CountryCode? countryCode) {
+                        _dialCode = countryCode?.dialCode ?? '';
                       },
                       initialSelection: 'IN',
                       favorite: const ['IN'],
                       onChanged: (CountryCode countryCode) {
-                        _dialCode = countryCode.dialCode;
+                        _dialCode = countryCode.dialCode ?? '';
                       },
                     ),
                     SizedBox(
@@ -147,11 +149,11 @@ class _LoginPageState extends State<LoginPage> {
                             FilteringTextInputFormatter.allow(RegExp('[0-9]'))
                           ],
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value?.isNotEmpty != true) {
                               Fluttertoast.showToast(
                                   msg: 'Please enter your phone number');
                               return 'This field cannot be empty';
-                            } else if (value.length != 10) {
+                            } else if (value?.length != 10) {
                               return 'Phone number should be of 10 digits';
                             }
                             return null;
@@ -169,16 +171,18 @@ class _LoginPageState extends State<LoginPage> {
                 minWidth: size.width / 3.5,
                 child: RaisedButton(
                   onPressed: () async {
-                    if (!_formKey.currentState.validate()) {
+                    if (_formKey.currentState?.validate() != true) {
                       Fluttertoast.showToast(
                           msg: 'Please enter a valid phone number');
                       return;
                     } else {
-                      _formKey.currentState.save();
-                      final String phoneNumber = _controller?.text;
+                      _formKey.currentState?.save();
+                      final String phoneNumber = _controller.text;
 
                       widget.sendOtp(
-                          dialCode: _dialCode, phoneNumber: phoneNumber);
+                        dialCode: _dialCode,
+                        phoneNumber: phoneNumber,
+                      );
                     }
                   },
                   color: Colors.red[600],

@@ -2,27 +2,31 @@
 import 'dart:io';
 
 // Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:fluttertoast/fluttertoast.dart';
+
+// Project imports:
 import 'package:app/UI/Views/SignUp/widgets/take_name.dart';
 import 'package:app/UI/Views/SignUp/widgets/take_profile_image.dart';
 import 'package:app/UI/Views/SignUp/widgets/take_username.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({
-    @required this.usernameController,
-    @required this.nameController,
-    @required this.checkUsernameAvailability,
-    @required this.formKey,
-    @required this.signUpUser,
-    @required this.logOut,
+    required this.usernameController,
+    required this.nameController,
+    required this.checkUsernameAvailability,
+    required this.formKey,
+    required this.signUpUser,
+    required this.logOut,
   });
 
   final TextEditingController usernameController;
   final TextEditingController nameController;
   final Future<bool> Function(String username) checkUsernameAvailability;
   final GlobalKey<FormState> formKey;
-  final Function({@required DateTime dob, @required File avatar}) signUpUser;
+  final Function({required DateTime? dob, required File? avatar}) signUpUser;
   final Future Function() logOut;
 
   @override
@@ -32,13 +36,13 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool usernameAvailable = false;
 
-  File _avatar;
+  File? _avatar;
 
   final _pageController = PageController();
 
   int _currentPageIndex = 0;
 
-  List<Widget> _signUpPages;
+  List<Widget> _signUpPages = [];
 
   void _addName() {
     if ((widget.nameController.text?.length ?? 0) > 2) {
@@ -57,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  void _addAvatar({bool skipped = true, File avatar}) {
+  void _addAvatar({bool skipped = true, File? avatar}) {
     widget.signUpUser(dob: null, avatar: skipped == false ? avatar : null);
   }
 

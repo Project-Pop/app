@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
 class ConfigReader {
-  static Map<String, dynamic> _config;
+  static Map<String, dynamic> _config = {};
 
   static Future<void> initialize(String env) async {
     final configString =

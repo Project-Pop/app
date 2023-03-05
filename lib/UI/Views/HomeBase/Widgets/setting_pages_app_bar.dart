@@ -1,6 +1,8 @@
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 
 Widget customAppBar(String title, BuildContext context) {
   return PreferredSize(
@@ -13,7 +15,7 @@ Widget customAppBar(String title, BuildContext context) {
               Navigator.of(context).pop();
             },
             icon: const Icon(
-              FlutterIcons.arrow_back_mdi,
+              Icons.arrow_back,
               color: Colors.white,
               size: 20,
             ),

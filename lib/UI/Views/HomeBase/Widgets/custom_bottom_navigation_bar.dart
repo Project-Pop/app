@@ -1,12 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:flutter_icons/flutter_icons.dart';
-
 class CustomBottomNavigationBar extends StatefulWidget {
-  const CustomBottomNavigationBar(
-      {@required this.onTap, this.initialIndex = 0});
+  const CustomBottomNavigationBar({required this.onTap, this.initialIndex = 0});
 
   final Function(int index) onTap;
   final int initialIndex;
@@ -29,11 +25,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       activeIcon: _buildNavIcon(iconData, true),
       label: '',
       backgroundColor: Colors.black,
-      
     );
   }
 
-  int currentIndex;
+  int currentIndex = 0;
   @override
   void initState() {
     currentIndex = widget.initialIndex;
@@ -46,7 +41,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       _buildNavItem(Icons.home),
       _buildNavItem(Icons.search),
       _buildNavItem(Icons.camera_alt_outlined),
-      _buildNavItem(FlutterIcons.heart_evi),
+      _buildNavItem(Icons.favorite),
       _buildNavItem(Icons.person),
     ];
 

@@ -66,11 +66,12 @@ class AuthProvider with ChangeNotifier implements AuthProviderInterface {
     } else if (resp == true) {
       _isAuthenticated = true;
 
-      await _storage.setIdToken(_authService.cognitoSession.idToken.jwtToken);
       await _storage
-          .setAccessToken(_authService.cognitoSession.accessToken.jwtToken);
+          .setIdToken((_authService.cognitoSession?.idToken.jwtToken)!);
       await _storage
-          .setRefreshToken(_authService.cognitoSession.refreshToken.token);
+          .setAccessToken((_authService.cognitoSession?.accessToken.jwtToken)!);
+      await _storage.setRefreshToken(
+          _authService.cognitoSession?.refreshToken?.token ?? '');
 
       await initiate();
     }
@@ -89,12 +90,12 @@ class AuthProvider with ChangeNotifier implements AuthProviderInterface {
 
   // ----------------------getters---------------------------------
 
-  String get userId {
-    return (_authService?.cognitoSession?.idToken?.payload ?? {})['sub'];
+  String? get userId {
+    return (_authService.cognitoSession?.idToken?.payload ?? {})['sub'];
   }
 
   bool get isAuthenticated => _isAuthenticated;
   bool get loaded => _loaded;
 
-  String get phoneNumber => _authService?.phoneNumber;
+  String? get phoneNumber => _authService.phoneNumber;
 }

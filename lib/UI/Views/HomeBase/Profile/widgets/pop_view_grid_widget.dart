@@ -1,13 +1,13 @@
 // Flutter imports:
-import 'package:app/UI/Views/HomeBase/Widgets/custom_video_player.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:video_player/video_player.dart';
 
 // Project imports:
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-import 'package:video_player/video_player.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/custom_video_player.dart';
 
 Widget cardPop() {
   return Container(

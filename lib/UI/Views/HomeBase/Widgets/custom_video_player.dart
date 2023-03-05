@@ -1,12 +1,16 @@
+// Dart imports:
 import 'dart:io';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:video_player/video_player.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
   const CustomVideoPlayer({
-    Key key,
-    @required this.videoUrl,
+    Key? key,
+    required this.videoUrl,
     this.isFileUrl = false,
   }) : super(key: key);
 
@@ -18,7 +22,7 @@ class CustomVideoPlayer extends StatefulWidget {
 }
 
 class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
-  VideoPlayerController controller;
+  VideoPlayerController? controller;
   @override
   void initState() {
     super.initState();
@@ -28,32 +32,33 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     } else {
       controller = VideoPlayerController.network(widget.videoUrl);
     }
-    controller
+    controller!
       ..addListener(() {
         if (mounted) {
           setState(() {});
         }
       })
       ..setLooping(true)
-      ..initialize().then((value) => controller.play());
+      ..initialize().then((value) => controller?.play());
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return VideoPlayerWidget(
-      controller: controller,
+      controller: controller!,
     );
   }
 }
 
 class VideoPlayerWidget extends StatelessWidget {
-  const VideoPlayerWidget({Key key, this.controller}) : super(key: key);
+  const VideoPlayerWidget({Key? key, required this.controller})
+      : super(key: key);
   final VideoPlayerController controller;
   @override
   Widget build(BuildContext context) {
@@ -69,7 +74,8 @@ class VideoPlayerWidget extends StatelessWidget {
 
   Widget buildVideo() {
     return AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: VideoPlayer(controller));
+      aspectRatio: controller.value.aspectRatio,
+      child: VideoPlayer(controller),
+    );
   }
 }

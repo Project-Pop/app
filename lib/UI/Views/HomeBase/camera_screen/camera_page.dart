@@ -1,11 +1,18 @@
+// Dart imports:
 import 'dart:io';
-import 'package:app/UI/Views/HomeBase/camera_screen/widgets/camera_zoom_widget.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+
+// Package imports:
 import 'package:flutter_better_camera/camera.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:path_provider/path_provider.dart';
+
+// Project imports:
+import 'package:app/Services/FlutterAbsolutePath/flutter_absolute_path.dart';
+import 'package:app/UI/Views/HomeBase/camera_screen/widgets/camera_zoom_widget.dart';
 
 class OpenCamera extends StatefulWidget {
   const OpenCamera({Key key, this.navigateToTagScreen}) : super(key: key);

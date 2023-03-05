@@ -1,24 +1,30 @@
+// Dart imports:
 import 'dart:io';
 
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-import 'package:app/UI/Views/HomeBase/settings_page/show_followers_page.dart';
-import 'package:app/UI/Views/HomeBase/settings_page/show_following_page.dart';
-import 'package:app/UI/Views/HomeBase/settings_page/widgets/setting_items.dart';
-import 'package:app/UI/Views/HomeBase/Widgets/setting_pages_app_bar.dart';
-import 'package:app/UI/Views/models/search_user_model.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+import 'package:app/UI/Views/HomeBase/Widgets/setting_pages_app_bar.dart';
+import 'package:app/UI/Views/HomeBase/settings_page/show_followers_page.dart';
+import 'package:app/UI/Views/HomeBase/settings_page/show_following_page.dart';
+import 'package:app/UI/Views/HomeBase/settings_page/widgets/setting_items.dart';
+import 'package:app/UI/Views/models/search_user_model.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage(
       {Key key,
       this.followList,
       this.followingList,
-      @required this.name,
-      @required this.userAvatar,
-      @required this.userNmae,
+      required this.name,
+      required this.userAvatar,
+      required this.userNmae,
       this.onTap})
       : super(key: key);
   final Image userAvatar;

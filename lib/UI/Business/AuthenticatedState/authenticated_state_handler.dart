@@ -31,7 +31,7 @@ class _AuthenticatedStateHandlerState extends State<AuthenticatedStateHandler> {
     return Consumer<UserProvider>(
       builder: (context, userProvider, loadingWidget) {
         if (userProvider.loaded == false) {
-          return loadingWidget;
+          return loadingWidget!;
         }
         if (userProvider.user == null) {
           return SignUpHandler();

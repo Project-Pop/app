@@ -1,6 +1,6 @@
 // Flutter imports:
-import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -11,9 +11,8 @@ import 'package:app/Providers/index.dart';
 import 'package:app/UI/Business/HomeBase/DiscoveryPage/discovery_page_handler.dart';
 import 'package:app/UI/Business/HomeBase/ProfilePage/profile_page_handler.dart';
 import 'package:app/UI/Views/HomeBase/Widgets/custom_bottom_navigation_bar.dart';
+import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
 import 'package:app/UI/Views/HomeBase/home_base.dart';
-import 'package:flutter/services.dart';
-
 import 'CameraPage/camera_page_handler.dart';
 
 class HomeBaseHandler extends StatefulWidget {
@@ -23,7 +22,7 @@ class HomeBaseHandler extends StatefulWidget {
 
 class _HomeBaseHandlerState extends State<HomeBaseHandler> {
   final _pageController = PageController();
-  UserProvider _userProvider;
+  UserProvider? _userProvider;
 
   final _logger = CustomLogger.logger(HomeBaseHandler);
 
@@ -68,7 +67,7 @@ class _HomeBaseHandlerState extends State<HomeBaseHandler> {
         DiscoveryPageHandler(),
         CameraPageHandler(),
         Container(),
-        ProfilePageHandler(_userProvider.user.username),
+        ProfilePageHandler(_userProvider?.user?.username),
       ],
       bottomNavigationBar: CustomBottomNavigationBar(
         onTap: _navItemTapped,

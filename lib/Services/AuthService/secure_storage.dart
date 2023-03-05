@@ -41,7 +41,7 @@ class SecureStorage {
     return userId;
   }
 
-  Future<String> getIdToken() async {
+  Future<String>? getIdToken() async {
     final idToken = await getAttribute(SecureStorage.idToken);
     return idToken;
   }
@@ -51,7 +51,7 @@ class SecureStorage {
     return idToken;
   }
 
-  Future<String> getAccessToken() async {
+  Future<String>? getAccessToken() async {
     final accessToken = await getAttribute(SecureStorage.accessToken);
     return accessToken;
   }
@@ -61,7 +61,7 @@ class SecureStorage {
     return accessToken;
   }
 
-  Future<String> getRefreshToken() async {
+  Future<String>? getRefreshToken() async {
     final refreshToken = await getAttribute(SecureStorage.refreshToken);
     return refreshToken;
   }

@@ -7,7 +7,7 @@ import 'package:app/Configs/environment.dart';
 abstract class CustomLogger {
   static Level _level = Level.nothing;
 
-  static void initialize(String env, [Level level]) {
+  static void initialize(String env, [Level? level]) {
     if (env == Environment.prod) {
       _level = Level.nothing;
     } else {
@@ -15,13 +15,13 @@ abstract class CustomLogger {
     }
   }
 
-  static Logger logger([Type type]) =>
+  static Logger logger([Type? type]) =>
       Logger(printer: CustomPrinter(type?.toString()), level: _level);
 }
 
 class CustomPrinter extends LogPrinter {
   CustomPrinter(this.className);
-  final String className;
+  final String? className;
 
   @override
   List<String> log(LogEvent event) {
@@ -29,6 +29,6 @@ class CustomPrinter extends LogPrinter {
     final emoji = PrettyPrinter.levelEmojis[event.level];
     final message = event.message;
 
-    return [color('$emoji $className: $message')];
+    return [color!('$emoji $className: $message')];
   }
 }

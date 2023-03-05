@@ -1,17 +1,23 @@
+// Dart imports:
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/Configs/custom_logger.dart';
-import 'package:app/Providers/MP4Maker/image_scaler.dart';
-import 'package:app/Providers/MP4Maker/video_generator.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
+// Project imports:
+import 'package:app/Configs/custom_logger.dart';
+import 'package:app/Providers/MP4Maker/image_scaler.dart';
+import 'package:app/Providers/MP4Maker/video_generator.dart';
+
 class MP4Maker {
   MP4Maker({
-    @required this.inputImages,
-    this.onThumbnailReady,
+    required this.inputImages,
+    required this.onThumbnailReady,
   })  : _tempFolder = DateTime.now().millisecondsSinceEpoch.toString(),
         assert(inputImages != null && inputImages.isNotEmpty,
             'input image list can not be empty or null') {
@@ -26,8 +32,8 @@ class MP4Maker {
   final _extension = 'tmp';
   final Logger _logger = CustomLogger.logger(MP4Maker);
 
-  Directory _directory;
-  String _dirPath;
+  Directory? _directory;
+  String? _dirPath;
 
   final _completer = Completer<void>();
 
@@ -47,8 +53,8 @@ class MP4Maker {
   Future<void> _initializeNewDirectory() async {
     _directory = await getExternalStorageDirectory();
 
-    _dirPath = '${_directory.path}/$_tempFolder';
-    await Directory(_dirPath).create(recursive: true);
+    _dirPath = '${_directory?.path}/$_tempFolder';
+    await Directory(_dirPath!).create(recursive: true);
   }
 
   Future<void> _writeImagesInSequence() async {
@@ -79,19 +85,21 @@ class MP4Maker {
 //---------------------------------STANDARD
 //                                DEFINITION-----------------------------
     // setting SD quality path to be consumed by user
-    _thumbMP4Path = await generateVideo(VideoGenerator(
-      inputFramerate: inputFramerate,
-      videoPath: '$_dirPath/${_tempFolder}_thumb.mp4',
-      imageIdentifiers: '$_dirPath/image_360_%d.jpg',
-      imageScalar: ImageScalar(
-        dirPath: _dirPath,
-        images: _tempDirectoryImages,
-        extension: _extension,
-        width: 360,
+    _thumbMP4Path = await generateVideo(
+      VideoGenerator(
+        inputFramerate: inputFramerate,
+        videoPath: '$_dirPath/${_tempFolder}_thumb.mp4',
+        imageIdentifiers: '$_dirPath/image_360_%d.jpg',
+        imageScalar: ImageScalar(
+          dirPath: _dirPath!,
+          images: _tempDirectoryImages,
+          extension: _extension,
+          width: 360,
+        ),
       ),
-    ));
+    );
 
-    onThumbnailReady(_thumbMP4Path);
+    onThumbnailReady(_thumbMP4Path!);
 
     after = DateTime.now();
 
@@ -107,7 +115,7 @@ class MP4Maker {
       videoPath: '$_dirPath/${_tempFolder}_HD.mp4',
       imageIdentifiers: '$_dirPath/image_1080_%d.jpg',
       imageScalar: ImageScalar(
-        dirPath: _dirPath,
+        dirPath: _dirPath!,
         images: _tempDirectoryImages,
         extension: _extension,
         width: 1080,
@@ -122,16 +130,16 @@ class MP4Maker {
     // delete the images and videos
     try {
       await _completer.future;
-      await Directory(_dirPath).delete(recursive: true);
+      await Directory(_dirPath!).delete(recursive: true);
     } catch (e) {
       _logger.v('error while deleting resources : $e');
     }
   }
 
-  String _hdMP4Path;
-  String _thumbMP4Path;
+  String? _hdMP4Path;
+  String? _thumbMP4Path;
 
-  String get hdMP4Path => _hdMP4Path;
-  String get thumbMP4Path => _thumbMP4Path;
+  String? get hdMP4Path => _hdMP4Path;
+  String? get thumbMP4Path => _thumbMP4Path;
   Completer<void> get completer => _completer;
 }

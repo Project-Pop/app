@@ -1,16 +1,22 @@
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+
+// Project imports:
 import 'package:app/Configs/custom_logger.dart';
 import 'package:app/Providers/MP4Maker/image_scaler.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 class VideoGenerator {
   VideoGenerator({
-    @required this.inputFramerate,
-    @required this.videoPath,
-    @required this.imageIdentifiers,
-    @required this.imageScalar,
+    required this.inputFramerate,
+    required this.videoPath,
+    required this.imageIdentifiers,
+    required this.imageScalar,
   });
   final double inputFramerate;
   final String videoPath;

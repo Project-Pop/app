@@ -1,13 +1,16 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 import 'package:app/UI/Views/HomeBase/Widgets/setting_pages_app_bar.dart';
 import 'package:app/UI/Views/models/search_user_model.dart';
-import 'package:flutter/material.dart';
 
 class ShowFollowing extends StatelessWidget {
-  const ShowFollowing({Key key, this.followingList, this.onTap})
+  const ShowFollowing({Key? key, required this.followingList, this.onTap})
       : super(key: key);
   final List<SearchUser> followingList;
-  final Function() onTap;
+  final Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

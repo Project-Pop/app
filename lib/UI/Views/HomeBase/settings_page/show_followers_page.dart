@@ -1,7 +1,10 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 import 'package:app/UI/Views/HomeBase/Widgets/setting_pages_app_bar.dart';
 import 'package:app/UI/Views/models/search_user_model.dart';
-import 'package:flutter/material.dart';
 
 class ShowFollowers extends StatelessWidget {
   const ShowFollowers({Key key, this.followersList}) : super(key: key);

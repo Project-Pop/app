@@ -15,23 +15,23 @@ import 'package:app/UI/Views/Theme/constants/colors.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
-    @required this.postCount,
-    @required this.viewsCount,
-    @required this.reactCount,
-    @required this.imageProfile,
-    @required this.name,
-    @required this.userUrl,
-    @required this.username,
-    @required this.pops,
-    @required this.cameraPops,
-    @required this.isMine,
-    @required this.profileButtonWidget,
+    required this.postCount,
+    required this.viewsCount,
+    required this.reactCount,
+    required this.imageProfile,
+    required this.name,
+    required this.userUrl,
+    required this.username,
+    required this.pops,
+    required this.cameraPops,
+    required this.isMine,
+    required this.profileButtonWidget,
   });
 
   final String postCount;
   final String viewsCount;
   final String reactCount;
-  final Image imageProfile;
+  final Image? imageProfile;
   final String name;
   final String userUrl;
   final String username;

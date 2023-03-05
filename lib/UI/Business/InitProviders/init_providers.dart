@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:app/Providers/index.dart';
 
 class InitProviders extends StatelessWidget {
-  const InitProviders({this.child});
+  const InitProviders({required this.child});
   final Widget child;
 
   @override

@@ -1,20 +1,22 @@
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
-import 'package:app/UI/Views/SignUp/widgets/custom_button.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+import 'package:app/UI/Views/SignUp/widgets/custom_button.dart';
 
 class TakeUsername extends StatefulWidget {
   const TakeUsername({
-    Key key,
-    @required this.usernameController,
-    @required this.checkUsernameAvailability,
-    @required this.addUsername,
+    Key? key,
+    required this.usernameController,
+    required this.checkUsernameAvailability,
+    required this.addUsername,
   }) : super(key: key);
 
   final TextEditingController usernameController;
   final Future<bool> Function(String username) checkUsernameAvailability;
-  final Function({@required bool available}) addUsername;
+  final Function({required bool available}) addUsername;
 
   @override
   _TakeUsernameState createState() => _TakeUsernameState();
@@ -80,8 +82,8 @@ class _TakeUsernameState extends State<TakeUsername> {
                 setState(() {});
               },
               validator: (val) {
-                if (val.isEmpty) return 'Please fill this field';
-                if (val.length < 3) return 'Minimum length should be 3';
+                if ((val ?? '').isEmpty) return 'Please fill this field';
+                if ((val ?? '').length < 3) return 'Minimum length should be 3';
 
                 return null;
               },
@@ -101,7 +103,7 @@ class _TakeUsernameState extends State<TakeUsername> {
             SizedBox(height: size.height / 50),
             CustomButtons(
               icon: const Icon(
-                FlutterIcons.arrow_alt_circle_right_faw5,
+                Icons.arrow_right,
                 size: 60,
               ),
               onTap: () {

@@ -12,8 +12,8 @@ abstract class MinimalUserModel
 
   String get username;
   String get fullname;
-  @nullable
-  String get imageUrl;
+
+  String? get imageUrl;
 
   static Serializer<MinimalUserModel> get serializer =>
       _$minimalUserModelSerializer;

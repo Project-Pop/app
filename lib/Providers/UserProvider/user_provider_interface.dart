@@ -7,7 +7,7 @@ import 'package:app/Models/index.dart';
 abstract class UserProviderInterface {
   Future<void> initiate();
 
-  Future<void> signUpNewUser(SignUpModel signUpModel, File avatar);
+  Future<void> signUpNewUser(SignUpModel signUpModel, File? avatar);
 
   Future<void> uploadUserAvatar(File avatar);
 
@@ -20,7 +20,7 @@ abstract class UserProviderInterface {
 
   // Future getUserActivities();
 
-  Future<UserRelationalModel> getUserRelationalData(String username);
+  Future<UserRelationalModel?> getUserRelationalData(String username);
 
   Future<bool> followUser(String remoteUsername);
   Future<bool> unfollowUser(String remoteUsername);

@@ -15,14 +15,11 @@ abstract class UserModel implements Built<UserModel, UserModelBuilder> {
 
   String get fullname;
 
-  @nullable
-  String get email;
+  String? get email;
 
-  @nullable
-  String get phone;
+  String? get phone;
 
-  @nullable
-  DateTime get dob;
+  DateTime? get dob;
 
   UserProfileModel get userProfile;
 

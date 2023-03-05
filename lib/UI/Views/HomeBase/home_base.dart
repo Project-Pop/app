@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class HomeBase extends StatelessWidget {
   const HomeBase({
-    @required this.pages,
-    @required this.controller,
-    @required this.bottomNavigationBar,
+    required this.pages,
+    required this.controller,
+    required this.bottomNavigationBar,
   });
   final List<Widget> pages;
   final PageController controller;

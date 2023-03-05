@@ -18,8 +18,7 @@ abstract class ActivityModel
   String get title;
   String get primaryMediaUrl;
 
-  @nullable
-  String get secondaryMediaUrl;
+  String? get secondaryMediaUrl;
 
   NotificationTargetType get targetType;
   String get targetResourceId;

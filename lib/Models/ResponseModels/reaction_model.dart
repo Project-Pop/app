@@ -11,8 +11,8 @@ abstract class ReactionModel
   ReactionModel._();
 
   String get reactionString;
-  @nullable
-  int get count;
+
+  int? get count;
 
   static Serializer<ReactionModel> get serializer => _$reactionModelSerializer;
 }

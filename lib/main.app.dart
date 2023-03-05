@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -10,6 +9,7 @@ import 'package:app/Configs/config_reader.dart';
 import 'package:app/Services/Connectivity/connectivity_status.dart';
 import 'package:app/UI/Business/Authentication/auth_handler.dart';
 import 'package:app/UI/Business/InitProviders/init_providers.dart';
+import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
 import 'UI/Views/Theme/custom_theme.dart';
 
 Future<void> mainApp(String env) async {

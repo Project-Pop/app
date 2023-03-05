@@ -18,9 +18,9 @@ class AuthService {
       ConfigReader.cognitoUserPoolId, ConfigReader.cognitoClientId,
       storage: CognitoMemoryStorage());
 
-  CognitoUser _cognitoUser;
+  CognitoUser? _cognitoUser;
 
-  CognitoUserSession cognitoSession;
+  CognitoUserSession? cognitoSession;
 
   final _storage = SecureStorage();
 
@@ -40,24 +40,26 @@ class AuthService {
         refreshToken: CognitoRefreshToken(refreshToken), clockDrift: 0);
 
     _cognitoUser = CognitoUser(
-        cognitoSession.idToken.payload['phone_number'] as String, _userPool,
-        storage: CognitoMemoryStorage());
+      cognitoSession?.idToken.payload['phone_number'] as String,
+      _userPool,
+      storage: CognitoMemoryStorage(),
+    );
 
-    if (cognitoSession.isValid() == false) {
+    if (cognitoSession?.isValid() != true) {
       await refreshSession();
     }
-    return cognitoSession.isValid();
+    return cognitoSession?.isValid() ?? false;
   }
 
   Future<void> refreshSession() async {
     if (cognitoSession == null || cognitoSession?.isValid() == true) return;
 
     cognitoSession =
-        await _cognitoUser.refreshSession(cognitoSession.refreshToken);
+        await _cognitoUser?.refreshSession((cognitoSession?.refreshToken)!);
 
-    await _storage.setIdToken(cognitoSession.idToken.jwtToken);
-    await _storage.setAccessToken(cognitoSession.accessToken.jwtToken);
-    await _storage.setRefreshToken(cognitoSession.refreshToken.token);
+    await _storage.setIdToken((cognitoSession?.idToken.jwtToken)!);
+    await _storage.setAccessToken((cognitoSession?.accessToken.jwtToken)!);
+    await _storage.setRefreshToken((cognitoSession?.refreshToken?.token)!);
 
     if (cognitoSession?.isValid() != true) {
       // user has to login again.
@@ -75,14 +77,15 @@ class AuthService {
 
       return true;
     } on CognitoClientException catch (e) {
-      Fluttertoast.showToast(msg: e.message, gravity: ToastGravity.CENTER);
+      Fluttertoast.showToast(
+          msg: e.message ?? '', gravity: ToastGravity.CENTER);
       return false;
     }
   }
 
   Future<dynamic> confirmOTP(String code) async {
     try {
-      cognitoSession = await _cognitoUser.sendCustomChallengeAnswer(code);
+      cognitoSession = await _cognitoUser?.sendCustomChallengeAnswer(code);
       return true;
     } on CognitoUserCustomChallengeException catch (_) {
       return 'WRONG_OTP';
@@ -101,7 +104,7 @@ class AuthService {
 
     try {
       await _cognitoUser
-          .initiateAuth(AuthenticationDetails(authParameters: []));
+          ?.initiateAuth(AuthenticationDetails(authParameters: []));
 
       return false;
     } on CognitoUserCustomChallengeException catch (_) {
@@ -114,13 +117,13 @@ class AuthService {
     } on CognitoClientException catch (e) {
       return e.code;
     } catch (e) {
-      return e.code;
+      return e;
     }
   }
 
-  String get authToken => cognitoSession?.idToken?.jwtToken;
-  bool get isAuthTokenValid => cognitoSession?.isValid();
+  String? get authToken => cognitoSession?.idToken?.jwtToken;
+  bool get isAuthTokenValid => cognitoSession?.isValid() ?? false;
 
   String get phoneNumber =>
-      (cognitoSession?.idToken?.payload ?? {})['phone_number'];
+      (cognitoSession?.idToken.payload ?? {})['phone_number'];
 }

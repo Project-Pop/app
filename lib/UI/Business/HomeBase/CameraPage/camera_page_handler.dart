@@ -1,14 +1,20 @@
+// Dart imports:
 import 'dart:io';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:built_collection/built_collection.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:app/Models/index.dart';
 import 'package:app/Providers/index.dart';
 import 'package:app/UI/Views/HomeBase/camera_screen/camera_page.dart';
 import 'package:app/UI/Views/HomeBase/camera_screen/tag_page.dart';
 import 'package:app/UI/Views/models/search_user_model.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:built_collection/built_collection.dart';
 
 class CameraPageHandler extends StatefulWidget {
   @override
@@ -16,13 +22,13 @@ class CameraPageHandler extends StatefulWidget {
 }
 
 class _CameraPageHandlerState extends State<CameraPageHandler> {
-  MP4Maker _mp4maker;
-  final _thumnailNotifier = ValueNotifier<String>(null);
+  MP4Maker? _mp4maker;
+  final _thumnailNotifier = ValueNotifier<String>('');
   var _cameraScreenKey = UniqueKey();
 
   Future<void> _uploadPost({
-    @required BuildContext ctx,
-    @required List<String> taggedUsernames,
+    required BuildContext ctx,
+    required List<String> taggedUsernames,
     String description = '',
   }) async {
     final _postProvider = Provider.of<PostProvider>(context, listen: false);
@@ -38,12 +44,12 @@ class _CameraPageHandlerState extends State<CameraPageHandler> {
     );
 
     // waiting for mp4Maker to finish its work
-    await _mp4maker.completer.future;
+    await _mp4maker?.completer.future;
 
     await _postProvider.postThePost(
       newPostModel: newPostModel,
-      hdVideoPath: _mp4maker.hdMP4Path,
-      thumbVideoPath: _mp4maker.thumbMP4Path,
+      hdVideoPath: (_mp4maker?.hdMP4Path)!,
+      thumbVideoPath: (_mp4maker?.thumbMP4Path)!,
     );
 
     /** 
@@ -51,7 +57,7 @@ class _CameraPageHandlerState extends State<CameraPageHandler> {
      * copy the videos, convert them to gif and
      * store them in external directory (named as application name)
      */
-    await _mp4maker.deleteAllResources(); // deleting the created resources
+    await _mp4maker?.deleteAllResources(); // deleting the created resources
 
     Fluttertoast.showToast(msg: 'Post created successfully');
 
@@ -77,8 +83,8 @@ class _CameraPageHandlerState extends State<CameraPageHandler> {
               username: e.username,
             ))
         .toList()
-          ..removeWhere(
-              (element) => element.username == _userProvider.user.username);
+      ..removeWhere(
+          (element) => element.username == _userProvider.user?.username);
     // removing self username from search results if present
   }
 
@@ -99,8 +105,8 @@ class _CameraPageHandlerState extends State<CameraPageHandler> {
       ),
     ).then((res) {
       if (res == true) return;
-      _thumnailNotifier.value = null;
-      _mp4maker.deleteAllResources();
+      _thumnailNotifier.value = '';
+      _mp4maker?.deleteAllResources();
     });
   }
 

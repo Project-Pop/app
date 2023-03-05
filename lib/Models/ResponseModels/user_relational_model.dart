@@ -1,7 +1,9 @@
 // Package imports:
-import 'package:app/Models/index.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+
+// Project imports:
+import 'package:app/Models/index.dart';
 
 part 'user_relational_model.g.dart';
 

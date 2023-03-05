@@ -1,6 +1,11 @@
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_icons/flutter_icons.dart';
+
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 
 class SettingItem extends StatelessWidget {
   const SettingItem({Key key, this.itemName, this.onTap, this.icon})

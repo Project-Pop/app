@@ -37,7 +37,7 @@ class AuthInterceptor implements RequestInterceptor {
 
       return request.copyWith(headers: {
         ...request.headers,
-        'Authorization': _authService.authToken
+        'Authorization': _authService.authToken!
       });
     }
   }

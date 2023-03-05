@@ -1,22 +1,28 @@
+// Dart imports:
 import 'dart:io';
 
-import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class TakeProfileImage extends StatefulWidget {
-  const TakeProfileImage({Key key, @required this.addAvatar}) : super(key: key);
+// Project imports:
+import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
 
-  final Function({bool skipped, File avatar}) addAvatar;
+class TakeProfileImage extends StatefulWidget {
+  const TakeProfileImage({Key? key, required this.addAvatar}) : super(key: key);
+
+  final Function({bool skipped, File? avatar}) addAvatar;
 
   @override
   _TakeProfileImageState createState() => _TakeProfileImageState();
 }
 
 class _TakeProfileImageState extends State<TakeProfileImage> {
-  File _avatar;
+  File? _avatar;
   Future<void> _getImage() async {
     final picker = ImagePicker();
 
@@ -90,9 +96,9 @@ class _TakeProfileImageState extends State<TakeProfileImage> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: const HeadingText(
+                  const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: HeadingText(
                         msg: 'Lets,Select Your Profile Photo',
                         textAlign: TextAlign.center,
                         textStyle:
@@ -110,7 +116,7 @@ class _TakeProfileImageState extends State<TakeProfileImage> {
                         child: CircleAvatar(
                           radius: size.width / 5.3,
                           backgroundImage:
-                              _avatar == null ? null : FileImage(_avatar),
+                              _avatar == null ? null : FileImage(_avatar!),
                           backgroundColor: Colors.black45,
                           child: _avatar == null
                               ? Icon(

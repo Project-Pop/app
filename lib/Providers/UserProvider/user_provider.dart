@@ -14,14 +14,14 @@ import 'package:app/Providers/UserProvider/user_provider_interface.dart';
 import 'package:app/Services/ApiServices/index.dart';
 
 class UserProvider with ChangeNotifier implements UserProviderInterface {
-  UserProvider({@required this.context});
+  UserProvider({required this.context});
 
   bool _loaded = false;
 
   final BuildContext context;
   final UserApiService _userApiService = UserApiService.instance;
 
-  UserModel _userModel;
+  UserModel? _userModel;
 
   final _logger = CustomLogger.logger(UserProvider);
 
@@ -43,10 +43,10 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   }
 
   @override
-  Future<void> signUpNewUser(SignUpModel signUpModel, File avatar) async {
+  Future<void> signUpNewUser(SignUpModel signUpModel, File? avatar) async {
     final res = await _userApiService.signUpNewUser(signUpModel);
     if (res.isSuccessful) {
-      _userModel = res.body.user;
+      _userModel = res.body?.user;
       Fluttertoast.showToast(msg: 'Profile created successfully 🤗');
 
       // TODO: upload image in background
@@ -60,7 +60,7 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   }
 
   @override
-  Future<void> uploadUserAvatar(File avatar) async {
+  Future<void> uploadUserAvatar(File? avatar) async {
     if (avatar == null) return;
     final res = await _userApiService.uploadUserAvatar(
       imagePath: avatar.path,
@@ -74,7 +74,7 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   Future<bool> isUsernameAvailable(String username) async {
     final res = await _userApiService.isUsernameAvailable(username);
     if (res.isSuccessful) {
-      return res.body;
+      return res.body!;
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong when checking username availability');
@@ -83,11 +83,11 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   }
 
   @override
-  Future<UserRelationalModel> getUserRelationalData(String username) async {
+  Future<UserRelationalModel?> getUserRelationalData(String username) async {
     final res = await _userApiService.getUserRelationalData(username);
 
     if (res.isSuccessful) {
-      return res.body;
+      return res.body!;
     } else {
       _logger.w('unable to fetch user data of $username,'
           ' code:${res.statusCode}, error: ${res.error}');
@@ -127,7 +127,7 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   Future<List<MinimalUserModel>> searchUsers(String searchString) async {
     final res = await _userApiService.searchUsers(searchString);
     if (res.isSuccessful) {
-      return res.body.toList();
+      return (res.body?.toList())!;
     } else {
       _logger.e('error in searching for users '
           'code:${res.statusCode}, error:${res.error}');
@@ -138,5 +138,5 @@ class UserProvider with ChangeNotifier implements UserProviderInterface {
   // ---------------------getters---------------
 
   bool get loaded => _loaded;
-  UserModel get user => _userModel;
+  UserModel? get user => _userModel;
 }

@@ -1,7 +1,7 @@
 // Package imports:
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:built_collection/built_collection.dart';
 
 // Project imports:
 import 'package:app/Models/ResponseModels/reaction_model.dart';
@@ -17,14 +17,11 @@ abstract class PostModel implements Built<PostModel, PostModelBuilder> {
   String get imageUrl;
   String get username;
 
-  @nullable
-  String get description;
+  String? get description;
 
-  @nullable
-  BuiltList<ReactionModel> get reactions;
+  BuiltList<ReactionModel>? get reactions;
 
-  @nullable
-  BuiltList<TaggedUserModel> get taggedUsers;
+  BuiltList<TaggedUserModel>? get taggedUsers;
 
   int get views;
   String get timestamp;

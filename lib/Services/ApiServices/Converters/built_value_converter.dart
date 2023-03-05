@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:built_collection/built_collection.dart';
+import 'package:built_value/serializer.dart';
 import 'package:chopper/chopper.dart';
 
 // Project imports:
@@ -12,11 +13,14 @@ class BuiltValueConverter extends JsonConverter {
       // use case when using multipart request
       return request;
     }
-    return super.convertRequest(request.copyWith(
+    return super.convertRequest(
+      request.copyWith(
         body: serializers.serializeWith(
-      serializers.serializerForType(request.body.runtimeType),
-      request.body,
-    )));
+          serializers.serializerForType(request.body.runtimeType)!,
+          request.body,
+        ),
+      ),
+    );
   }
 
   @override
@@ -45,9 +49,10 @@ class BuiltValueConverter extends JsonConverter {
     );
   }
 
-  SingleItemType _deserialize<SingleItemType>(Map<String, dynamic> value) {
+  SingleItemType? _deserialize<SingleItemType>(Map<String, dynamic> value) {
     return serializers.deserializeWith<SingleItemType>(
-      serializers.serializerForType(SingleItemType),
+      serializers.serializerForType(SingleItemType)!
+          as Serializer<SingleItemType>,
       value,
     );
   }

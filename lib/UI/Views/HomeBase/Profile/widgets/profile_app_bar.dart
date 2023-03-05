@@ -1,9 +1,9 @@
 // Flutter imports:
-import 'package:app/UI/Views/HomeBase/settings_page/setting.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:app/UI/Views/HomeBase/Widgets/custom_text.dart';
+import 'package:app/UI/Views/HomeBase/settings_page/setting.dart';
 
 Widget getAppBar(String username, bool isMine) {
   return PreferredSize(

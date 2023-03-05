@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:video_player/video_player.dart';
 
 class clipVideo extends StatefulWidget {
@@ -9,26 +12,26 @@ class clipVideo extends StatefulWidget {
 }
 
 class _clipVideo extends State<clipVideo> {
-  String _path;
-  VideoPlayerController _controller;
-  Future<void> _initializeVideoPlayerFuture;
+  String? _path;
+  VideoPlayerController? _controller;
+  Future<void>? _initializeVideoPlayerFuture;
   @override
   void initState() {
     _path = widget.path;
     _controller = VideoPlayerController.network(widget.path);
     //_controller = VideoPlayerController.network(
     //   'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
-    _initializeVideoPlayerFuture = _controller.initialize();
-    _controller.play();
-    _controller.setVolume(0.0);
-    _controller.setLooping(true);
-    
+    _initializeVideoPlayerFuture = _controller?.initialize();
+    _controller?.play();
+    _controller?.setVolume(0.0);
+    _controller?.setLooping(true);
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -41,8 +44,8 @@ class _clipVideo extends State<clipVideo> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Center(
               child: AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
+                aspectRatio: (_controller?.value.aspectRatio)!,
+                child: VideoPlayer(_controller!),
               ),
             );
           } else {
@@ -57,7 +60,7 @@ class _clipVideo extends State<clipVideo> {
 }
 
 class ShowVideos extends StatefulWidget {
-  const ShowVideos({Key key}) : super(key: key);
+  const ShowVideos({Key? key}) : super(key: key);
 
   @override
   _ShowVideosState createState() => _ShowVideosState();

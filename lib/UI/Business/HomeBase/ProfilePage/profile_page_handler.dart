@@ -13,25 +13,25 @@ import 'package:app/UI/Views/HomeBase/Profile/widgets/custom_profile_button.dart
 class ProfilePageHandler extends StatefulWidget {
   const ProfilePageHandler(this.username);
 
-  final String username;
+  final String? username;
 
   @override
   _ProfilePageHandlerState createState() => _ProfilePageHandlerState();
 }
 
 class _ProfilePageHandlerState extends State<ProfilePageHandler> {
-  ProfileButtonWidget _profileButtonWidget;
-  UserModel _userModel;
-  UserProvider _userProvider;
-  bool _isMine;
+  ProfileButtonWidget? _profileButtonWidget;
+  UserModel? _userModel;
+  UserProvider? _userProvider;
+  bool? _isMine;
 
   bool _loading = true;
 
-  void _setProfileButtonWidget({bool isMine, bool isFollowing}) {
+  void _setProfileButtonWidget({required bool isMine, bool? isFollowing}) {
     _profileButtonWidget = null;
     if (isMine == true) {
       _profileButtonWidget = ProfileButtonWidget(
-        name: 'url/${_userModel.username}', // TODO: provide correct url
+        name: 'url/${_userModel?.username}', // TODO: provide correct url
         onTap: () {},
       );
     } else if (isFollowing == true) {
@@ -39,7 +39,8 @@ class _ProfilePageHandlerState extends State<ProfilePageHandler> {
           name: 'Following',
           onTap: () async {
             final isSuccessful =
-                await _userProvider.unfollowUser(_userModel.username);
+                (await _userProvider?.unfollowUser((_userModel?.username)!)) ??
+                    false;
             if (isSuccessful) {
               setState(() {
                 _setProfileButtonWidget(isMine: false, isFollowing: false);
@@ -48,33 +49,34 @@ class _ProfilePageHandlerState extends State<ProfilePageHandler> {
           });
     } else if (isFollowing == false) {
       _profileButtonWidget = ProfileButtonWidget(
-          name: 'Follow',
-          onTap: () async {
-            final isSuccessful =
-                await _userProvider.followUser(_userModel.username);
-            if (isSuccessful) {
-              setState(() {
-                _setProfileButtonWidget(isMine: false, isFollowing: true);
-              });
-            }
-          });
+        name: 'Follow',
+        onTap: () async {
+          final isSuccessful =
+              (await _userProvider?.followUser((_userModel?.username)!)) ??
+                  false;
+          if (isSuccessful) {
+            setState(() {
+              _setProfileButtonWidget(isMine: false, isFollowing: true);
+            });
+          }
+        },
+      );
     }
   }
 
   Future<void> initiate() async {
     _userProvider = Provider.of<UserProvider>(context, listen: false);
-    _isMine = widget.username == _userProvider.user.username;
-
-    if (_isMine) {
-      _userModel = _userProvider.user;
+    _isMine = widget.username == _userProvider?.user?.username;
+    if (_isMine ?? false) {
+      _userModel = _userProvider?.user;
       _setProfileButtonWidget(isMine: true);
     } else {
       final relationalData =
-          await _userProvider.getUserRelationalData(widget.username);
+          await _userProvider?.getUserRelationalData((widget?.username)!);
 
-      _userModel = relationalData.user;
+      _userModel = relationalData?.user;
       _setProfileButtonWidget(
-          isMine: false, isFollowing: relationalData.following);
+          isMine: false, isFollowing: relationalData?.following);
     }
     setState(() {
       _loading = _userModel == null;
@@ -95,17 +97,17 @@ class _ProfilePageHandlerState extends State<ProfilePageHandler> {
     }
 
     return ProfilePage(
-      postCount: '${_userModel.userProfile.popScore}',
-      viewsCount: '${_userModel.userProfile.views}',
-      reactCount: '${_userModel.userProfile.reacts}',
+      postCount: '${_userModel?.userProfile.popScore}',
+      viewsCount: '${_userModel?.userProfile.views}',
+      reactCount: '${_userModel?.userProfile.reacts}',
       imageProfile: null, // TODO: provide imageProfile
-      name: _userModel.fullname,
+      name: (_userModel?.fullname)!,
       userUrl: '', // TODO: provide url
-      username: _userModel.username,
+      username: (_userModel?.username)!,
       pops: const [], // TODO: provide this list
       cameraPops: const [], // TODO: provide this list
-      isMine: _isMine,
-      profileButtonWidget: _profileButtonWidget,
+      isMine: _isMine ?? false,
+      profileButtonWidget: _profileButtonWidget!,
     );
   }
 }

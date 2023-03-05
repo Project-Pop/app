@@ -1,17 +1,23 @@
+// Dart imports:
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/Configs/custom_logger.dart';
-import 'package:exif/exif.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:exif/exif.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+
+// Project imports:
+import 'package:app/Configs/custom_logger.dart';
 
 class ImageScalar {
   const ImageScalar({
-    @required this.dirPath,
-    @required this.images,
-    @required this.extension,
-    @required this.width,
+    required this.dirPath,
+    required this.images,
+    required this.extension,
+    required this.width,
   });
   final String dirPath;
   final List<File> images;
@@ -43,10 +49,11 @@ class ImageScalar {
 
       // to get the dimensions of image
       final mediaStreamInfo =
-          (await FlutterFFprobe().getMediaInformation(imagePath))
-              .getStreams()
-              .first
-              .getAllProperties();
+          ((await FlutterFFprobe().getMediaInformation(imagePath))
+                  .getStreams()
+                  ?.first
+                  .getAllProperties()) ??
+              {};
 
       final height = _scaledHeight(
         mediaStreamInfo['height'],
@@ -61,9 +68,10 @@ class ImageScalar {
       ];
 
       if (data['Image Orientation'] != null &&
-          data['Image Orientation'].printable.contains('90')) {
-        final ccw = data['Image Orientation'].printable.contains('CCW') ||
-            data['Image Orientation'].printable.contains('ccw');
+          (data['Image Orientation']?.printable.contains('90') ?? false)) {
+        final ccw =
+            (data['Image Orientation']?.printable.contains('CCW') ?? false) ||
+                (data['Image Orientation']?.printable.contains('ccw') ?? false);
         if (ccw) {
           arguments.last += ',transpose=2';
         } else {

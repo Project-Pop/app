@@ -10,32 +10,27 @@ import 'package:sms_autofill/sms_autofill.dart';
 
 class OTPBox extends StatefulWidget {
   const OTPBox({
-    this.phoneNumber,
-    this.dialCode,
-    this.resendOtp,
-    this.submitOtp,
+    required this.phoneNumber,
+    required this.dialCode,
+    required this.resendOtp,
+    required this.submitOtp,
   });
 
   static Future<void> displayDialog({
-    @required
-        BuildContext context,
-    @required
-        String phoneNumber,
-    @required
-        String dialCode,
-    @required
-        Function({
-      @required String dialCode,
-      @required String phoneNumber,
+    required BuildContext context,
+    required String phoneNumber,
+    required String dialCode,
+    required Function({
+      required String dialCode,
+      required String phoneNumber,
     })
-            resendOtp,
-    @required
-        Future<bool> Function(
+        resendOtp,
+    required Future<bool> Function(
       String code, {
-      @required String dialCode,
-      @required String phoneNumber,
+      required String dialCode,
+      required String phoneNumber,
     })
-            submitOtp,
+        submitOtp,
   }) async {
     await showDialog(
         context: context,
@@ -75,13 +70,13 @@ class OTPBox extends StatefulWidget {
   final String phoneNumber;
   final String dialCode;
   final Function({
-    @required String dialCode,
-    @required String phoneNumber,
+    required String dialCode,
+    required String phoneNumber,
   }) resendOtp;
   final Future<bool> Function(
     String code, {
-    @required String dialCode,
-    @required String phoneNumber,
+    required String dialCode,
+    required String phoneNumber,
   }) submitOtp;
 
   @override
@@ -89,15 +84,19 @@ class OTPBox extends StatefulWidget {
 }
 
 class _OTPBoxState extends State<OTPBox> with CodeAutoFill {
-  String _typedOTPCode = '';
+  String? _typedOTPCode = '';
   DateTime _resendingTime = DateTime.now();
   int _remainingTime = 30;
 
-  String _autoFetchedOTP = '';
+  String? _autoFetchedOTP = '';
 
   bool _isSubmittingOtp = false;
 
-  Widget _actionButton({Color buttonColor, String text, Function onTap}) {
+  Widget _actionButton({
+    required Color buttonColor,
+    required String text,
+    void Function()? onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       child: Card(
@@ -190,7 +189,7 @@ class _OTPBoxState extends State<OTPBox> with CodeAutoFill {
       if (_autoFetchedOTP == code) return;
       _autoFetchedOTP = code;
       setState(() {});
-      _submitOTP(_autoFetchedOTP);
+      _submitOTP(_autoFetchedOTP!);
     });
   }
 
@@ -289,7 +288,7 @@ class _OTPBoxState extends State<OTPBox> with CodeAutoFill {
                 _actionButton(
                   text: 'Submit',
                   buttonColor: Colors.redAccent,
-                  onTap: () => _submitOTP(_typedOTPCode),
+                  onTap: () => _submitOTP(_typedOTPCode!),
                 ),
               ],
             )
